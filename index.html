@@ -89,7 +89,7 @@ body{background:#000;color:#fff;height:100dvh;overflow:hidden}
 <div id="localList"></div>
 </div>
 <div id="playlistPanel" style="display:none;position:relative;z-index:1">
-<div style="display:flex;gap:8px;margin-bottom:14px"><input id="newPlaylistName" placeholder="Nama playlist baru..." style="flex:1;background:rgba(20,20,20,0.7);border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:12px 16px;color:#fff"><button class="goBtn" onclick="createPlaylist()">Buat</button></div>
+<div style="display:flex;gap:8px;margin-bottom:14px"><input id="newPlaylistName" placeholder="Nama playlist baru..." style="flex:1;background:rgba(20,20,20,0.7);border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:12px 16px;color:#fff"><button id="buatBtn" type="button" class="goBtn" onclick="createPlaylist()">Buat</button></div>
 <div id="playlistList"></div>
 </div>
 </div>
@@ -201,12 +201,22 @@ function switchTab(t){
   if(t==='lyrics'){ slider.style.transform='translateX(-50%)'; song.style.opacity=.5; lyr.style.opacity=1; document.getElementById('full').classList.add('lyrics-mode'); }
   else{ slider.style.transform='translateX(0)'; lyr.style.opacity=.5; song.style.opacity=1; document.getElementById('full').classList.remove('lyrics-mode'); } 
 }
-function savePlaylists(){ localStorage.setItem('playlists', JSON.stringify(playlists)); }
+function savePlaylists(){ try{ localStorage.setItem('playlists', JSON.stringify(playlists)); }catch(e){} }
+
 function createPlaylist(){
-  let name=document.getElementById('newPlaylistName').value.trim()||document.getElementById('quickNewPlaylist').value.trim();
-  if(!name) name='Playlist '+(playlists.length+1);
+  const input = document.getElementById('newPlaylistName');
+  const input2 = document.getElementById('quickNewPlaylist');
+  let name = (input?.value || '').trim() || (input2?.value || '').trim();
+  if(!name) name = 'Playlist '+(playlists.length+1);
   playlists.push({id:'pl_'+Date.now(), name:name, tracks:[]});
-  savePlaylists(); document.getElementById('newPlaylistName').value=''; document.getElementById('quickNewPlaylist').value=''; renderPlaylists(); renderAddToPlaylistList();
+  savePlaylists(); 
+  if(input) input.value=''; 
+  if(input2) input2.value='';
+  renderPlaylists(); 
+  renderAddToPlaylistList();
+  // feedback biar tau kepencet
+  const btn = document.getElementById('buatBtn');
+  if(btn){ const old=btn.textContent; btn.textContent='✓'; setTimeout(()=>btn.textContent=old,800); }
 }
 function createPlaylistFromAdd(){ createPlaylist(); }
 function triggerMarquee(){
