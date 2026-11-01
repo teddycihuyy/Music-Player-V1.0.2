@@ -42,10 +42,15 @@ body{background:#000;color:#fff;height:100dvh;overflow:hidden}
 #slider{position:absolute;inset:0;z-index:2;display:flex;width:200%;transition:.45s}
 .panel{width:50%;height:100%;position:relative}
 .bottom{position:absolute;bottom:0;left:0;right:0;z-index:3;background:rgba(18,18,18,.92);backdrop-filter:blur(30px);border-radius:32px 32px 0 0;padding:16px 20px 28px}
-.lyricBox{position:absolute;top:88px;left:16px;right:16px;bottom:250px;padding:20px;overflow-y:auto;white-space:pre-line;line-height:2.15;font-size:14.5px;background:rgba(20,20,20,.58);backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.14);border-radius:20px}
+.lyricBox{position:absolute;top:88px;left:16px;right:16px;bottom:320px;padding:20px;overflow-y:auto;white-space:pre-line;line-height:2.15;font-size:14.5px;background:rgba(20,20,20,.58);backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.14);border-radius:20px;margin-bottom:12px}
 .lyricBox.ad-mode{background:rgba(255,204,0,0.12);border-color:rgba(255,204,0,0.3);color:#ffea8a}
 #adBadge{display:none;background:#ffcc00;color:#000;font-size:10px;font-weight:900;padding:4px 8px;border-radius:6px;margin-left:8px}
 #adBadge.show{display:inline-block}
+#fTitle{overflow:hidden;white-space:nowrap;position:relative}
+#fTitle span{display:inline-block;white-space:nowrap;will-change:transform}
+#fTitle.animate span{animation:scrollOnce 9s ease-in-out 1}
+@keyframes scrollOnce{0%,15%{transform:translateX(0)}45%,70%{transform:translateX(calc(-100% + 120px))}85%,100%{transform:translateX(0)}}
+#fArtist{margin-top:6px!important;padding-top:2px}
 #queue{position:absolute;right:0;top:0;bottom:0;width:86%;background:#111;z-index:10;transform:translateX(100%);transition:.4s;padding:20px;overflow-y:auto}
 #queue.active{transform:translateX(0)}
 .toolRow{display:flex;justify-content:space-between;margin-top:14px}
@@ -98,7 +103,7 @@ body{background:#000;color:#fff;height:100dvh;overflow:hidden}
 <div id="slider"><div class="panel"></div><div class="panel"><div id="lyrics" class="lyricBox">Lirik akan muncul di sini</div></div></div>
 <div id="queue"><h3 style="display:flex;justify-content:space-between">Queue <i class="fa-solid fa-xmark" onclick="queue.classList.remove('active')"></i></h3><div id="queueList" style="margin-top:16px"></div></div>
 <div class="bottom">
-<div style="display:flex;justify-content:space-between;align-items:center"><div style="flex:1;min-width:0"><h2 id="fTitle" style="font-size:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">- <span id="adBadge">AD</span></h2><p id="fArtist" style="font-size:12px;opacity:.6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">-</p><p id="fStatus" style="font-size:10px;color:#666;margin-top:3px;height:14px"></p></div><div style="display:flex;gap:18px;font-size:22px"><i id="likeBtn" class="fa-regular fa-heart" onclick="toggleLike()"></i><i class="fa-solid fa-list-ul" onclick="queue.classList.add('active')"></i></div></div>
+<div style="display:flex;justify-content:space-between;align-items:center"><div style="flex:1;min-width:0;overflow:hidden"><h2 id="fTitle" style="font-size:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"><span id="fTitleText">-</span> <span id="adBadge">AD</span></h2><p id="fArtist" style="font-size:12px;opacity:.6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">-</p><p id="fStatus" style="font-size:10px;color:#666;margin-top:3px;height:14px"></p></div><div style="display:flex;gap:18px;font-size:22px"><i id="likeBtn" class="fa-regular fa-heart" onclick="toggleLike()"></i><i class="fa-solid fa-list-ul" onclick="queue.classList.add('active')"></i></div></div>
 <div class="toolRow">
 <div onclick="openModal('timerModal')"><i class="fa-solid fa-clock"></i><span>Timer</span></div>
 <div onclick="openModal('eqModal')"><i class="fa-solid fa-sliders"></i><span>EQ</span></div>
@@ -109,8 +114,8 @@ body{background:#000;color:#fff;height:100dvh;overflow:hidden}
 <div style="margin-top:14px"><input type="range" id="seek" value="0"><div style="display:flex;justify-content:space-between;font-size:11px;opacity:.6;margin-top:6px"><span id="cur">0:00</span><span id="dur">0:00</span></div></div>
 <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px"><i class="fa-solid fa-shuffle" id="shuffleBtn" style="opacity:.45;width:42px;height:42px;display:flex;justify-content:center;align-items:center;border-radius:50%;font-size:18px;border:1px solid transparent" onclick="toggleShuffle()"></i><i class="fa-solid fa-backward-step" style="font-size:22px;width:42px;height:42px;display:flex;justify-content:center;align-items:center" onclick="prev()"></i><div onclick="togglePlay()" style="width:68px;height:68px;background:#fff;color:#000;border-radius:50%;display:flex;justify-content:center;align-items:center;font-size:26px;margin:0 4px"><i id="pIcon" class="fa-solid fa-play"></i></div><i class="fa-solid fa-forward-step" style="font-size:22px;width:42px;height:42px;display:flex;justify-content:center;align-items:center" onclick="next()"></i><i class="fa-solid fa-repeat" id="repeatBtn" style="opacity:.45;width:42px;height:42px;display:flex;justify-content:center;align-items:center;border-radius:50%;font-size:18px;border:1px solid transparent" onclick="toggleRepeat()"></i></div>
 </div>
-  </div>
-  <div id="timerModal" class="modal" onclick="if(event.target==this) closeModal('timerModal')"><div class="modalBox"><div class="closeX" onclick="closeModal('timerModal')"><i class="fa-solid fa-xmark"></i></div><div style="width:40px;height:4px;background:rgba(255,255,255,0.2);border-radius:10px;margin:0 auto 18px"></div><h3 style="font-size:20px;font-weight:800">Timer</h3><div class="timerGrid"><button class="timerBtn" onclick="setTimer(5)">5m</button><button class="timerBtn" onclick="setTimer(15)">15m</button><button class="timerBtn" onclick="setTimer(30)">30m</button><button class="timerBtn" onclick="setTimer(60)">60m</button></div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:20px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);padding:14px 16px;border-radius:14px"><span>Timer Aktif</span><div id="timerSwitch" class="switch" onclick="toggleTimer()"></div></div><p id="timerCountdown" style="text-align:center;font-size:13px;color:#fff;margin-top:14px;font-weight:600">Timer mati</p><button onclick="clearTimer()" style="margin-top:18px;width:100%;padding:14px;border-radius:14px;border:none;background:rgba(255,255,255,0.08);color:#fff;font-weight:700;border:1px solid rgba(255,255,255,0.1)">Matikan</button><button onclick="closeModal('timerModal')" style="margin-top:10px;width:100%;padding:14px;border-radius:14px;border:none;background:#fff;color:#000;font-weight:700">Tutup</button></div></div>
+</div>
+<div id="timerModal" class="modal" onclick="if(event.target==this) closeModal('timerModal')"><div class="modalBox"><div class="closeX" onclick="closeModal('timerModal')"><i class="fa-solid fa-xmark"></i></div><div style="width:40px;height:4px;background:rgba(255,255,255,0.2);border-radius:10px;margin:0 auto 18px"></div><h3 style="font-size:20px;font-weight:800">Timer</h3><div class="timerGrid"><button class="timerBtn" onclick="setTimer(5)">5m</button><button class="timerBtn" onclick="setTimer(15)">15m</button><button class="timerBtn" onclick="setTimer(30)">30m</button><button class="timerBtn" onclick="setTimer(60)">60m</button></div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:20px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);padding:14px 16px;border-radius:14px"><span>Timer Aktif</span><div id="timerSwitch" class="switch" onclick="toggleTimer()"></div></div><p id="timerCountdown" style="text-align:center;font-size:13px;color:#fff;margin-top:14px;font-weight:600">Timer mati</p><button onclick="clearTimer()" style="margin-top:18px;width:100%;padding:14px;border-radius:14px;border:none;background:rgba(255,255,255,0.08);color:#fff;font-weight:700;border:1px solid rgba(255,255,255,0.1)">Matikan</button><button onclick="closeModal('timerModal')" style="margin-top:10px;width:100%;padding:14px;border-radius:14px;border:none;background:#fff;color:#000;font-weight:700">Tutup</button></div></div>
 <div id="sleepModal" class="modal" onclick="if(event.target==this) closeModal('sleepModal')"><div class="modalBox"><div class="closeX" onclick="closeModal('sleepModal')"><i class="fa-solid fa-xmark"></i></div><div style="width:40px;height:4px;background:rgba(255,255,255,0.2);border-radius:10px;margin:0 auto 18px"></div><h3 style="font-size:20px;font-weight:800">Sleep Timer</h3><div style="display:flex;justify-content:space-between;align-items:center;margin-top:20px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);padding:16px 16px;border-radius:14px"><div><b style="font-size:14px">Berhenti di akhir lagu</b><p style="font-size:11px;opacity:.5;margin-top:2px">Musik berhenti otomatis</p></div><div id="sleepSwitch" class="switch" onclick="toggleSleep()"></div></div><p id="sleepStatus" style="text-align:center;font-size:12px;opacity:.6;margin-top:14px">Mati</p><button onclick="closeModal('sleepModal')" style="margin-top:18px;width:100%;padding:14px;border-radius:14px;border:none;background:#fff;color:#000;font-weight:700">Tutup</button></div></div>
 <div id="eqModal" class="modal" onclick="if(event.target==this) closeModal('eqModal')"><div class="modalBox"><div class="closeX" onclick="closeModal('eqModal')"><i class="fa-solid fa-xmark"></i></div><div style="width:40px;height:4px;background:rgba(255,255,255,0.2);border-radius:10px;margin:0 auto 18px"></div><h3 style="font-size:20px;font-weight:800">Equalizer</h3><div style="margin-top:22px"><div class="eqRow"><div><b>Bass</b><p style="font-size:10px;opacity:.5">Low</p></div><input type="range" id="bass" min="-12" max="12" value="0"></div><div class="eqRow"><div><b>Mid</b><p style="font-size:10px;opacity:.5">Middle</p></div><input type="range" id="mid" min="-12" max="12" value="0"></div><div class="eqRow"><div><b>Treble</b><p style="font-size:10px;opacity:.5">High</p></div><input type="range" id="treble" min="-12" max="12" value="0"></div></div><button onclick="closeModal('eqModal')" style="margin-top:20px;width:100%;padding:14px;border-radius:14px;border:none;background:#fff;color:#000;font-weight:700">Simpan</button></div></div>
 <div id="songOptionsModal" class="modal" onclick="if(event.target==this) closeModal('songOptionsModal')"><div class="modalBox"><div class="closeX" onclick="closeModal('songOptionsModal')"><i class="fa-solid fa-xmark"></i></div><div style="width:40px;height:4px;background:rgba(255,255,255,0.2);border-radius:10px;margin:0 auto 18px"></div><h3 id="optTitle" style="font-size:16px;font-weight:800">Options</h3><div style="margin-top:18px;display:flex;flex-direction:column;gap:10px"><button onclick="likeFromOptions()" style="width:100%;padding:14px;border-radius:14px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#fff;font-weight:600;text-align:left"><i class="fa-regular fa-heart" style="margin-right:10px"></i> Like / Unlike</button><button onclick="copyLinkFromOptions()" style="width:100%;padding:14px;border-radius:14px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#fff;font-weight:600;text-align:left"><i class="fa-solid fa-link" style="margin-right:10px"></i> Salin Link</button><button onclick="addToPlaylistFromOptions()" style="width:100%;padding:14px;border-radius:14px;border:none;background:#fff;color:#000;font-weight:700;text-align:left"><i class="fa-solid fa-plus" style="margin-right:10px"></i> Add to Playlist</button></div><button onclick="closeModal('songOptionsModal')" style="margin-top:14px;width:100%;padding:14px;border-radius:14px;border:none;background:rgba(255,255,255,0.08);color:#fff;font-weight:700">Batal</button></div></div>
@@ -129,7 +134,7 @@ let playlists=JSON.parse(localStorage.getItem('playlists')||'[]');
 let speeds=[0.5,0.75,1.0,1.25,1.5,2.0], sIdx=2;
 let localTracks=[];
 const q=document.getElementById('q'), list=document.getElementById('list'), queueList=document.getElementById('queueList'), localList=document.getElementById('localList'), localCount=document.getElementById('localCount');
-const fTitle=document.getElementById('fTitle'), fArtist=document.getElementById('fArtist'), fStatus=document.getElementById('fStatus'), bg=document.getElementById('bg'), homeBg=document.getElementById('homeBg');
+const fTitle=document.getElementById('fTitle'), fTitleText=document.getElementById('fTitleText'), fArtist=document.getElementById('fArtist'), fStatus=document.getElementById('fStatus'), bg=document.getElementById('bg'), homeBg=document.getElementById('homeBg');
 const miniTitle=document.getElementById('miniTitle'), miniArtist=document.getElementById('miniArtist'), miniImg=document.getElementById('miniImg');
 const lyricsDiv=document.getElementById('lyrics'), cur=document.getElementById('cur'), dur=document.getElementById('dur'), mCur=document.getElementById('mCur'), mDur=document.getElementById('mDur');
 const seek=document.getElementById('seek'), miniSeek=document.getElementById('miniSeek'), pIcon=document.getElementById('pIcon'), miniPlay=document.getElementById('miniPlay'), adBadge=document.getElementById('adBadge');
@@ -154,6 +159,15 @@ function createPlaylist(){
   savePlaylists(); document.getElementById('newPlaylistName').value=''; document.getElementById('quickNewPlaylist').value=''; renderPlaylists(); renderAddToPlaylistList();
 }
 function createPlaylistFromAdd(){ createPlaylist(); }
+function triggerMarquee(){
+  const titleEl=document.getElementById('fTitle');
+  const textEl=document.getElementById('fTitleText');
+  titleEl.classList.remove('animate');
+  void titleEl.offsetWidth;
+  if(textEl.scrollWidth > titleEl.clientWidth + 10){
+    titleEl.classList.add('animate');
+  }
+}
 function renderPlaylists(){
   const container=document.getElementById('playlistList'); 
   if(!playlists.length){ container.innerHTML='<p style="text-align:center;opacity:.4;margin-top:30px">Belum ada playlist.<br>Buat playlist baru di atas.</p>'; return; }
@@ -283,12 +297,13 @@ function playLocal(i){
   if(player) player.pauseVideo();
   homeBg.style.backgroundImage=`linear-gradient(135deg,#222,#000)`; homeBg.classList.add('show');
   bg.style.backgroundImage=`linear-gradient(135deg,#333,#000)`; miniImg.src='';
-  fTitle.textContent=t.title; fArtist.textContent=t.artist+' • Offline'; miniTitle.textContent=t.title; miniArtist.textContent=t.artist;
+  fTitleText.textContent=t.title; fArtist.textContent=t.artist+' • Offline'; miniTitle.textContent=t.title; miniArtist.textContent=t.artist;
   fStatus.textContent=''; lyricsDiv.textContent=navigator.onLine?'Mencari lirik...':'Lirik tidak tersedia'; lyricsDiv.classList.remove('ad-mode');
   document.getElementById('full').classList.add('active');
   localAudio.src=t.url; localAudio.playbackRate=speeds[sIdx]; localAudio.play();
   pIcon.className='fa-solid fa-pause'; miniPlay.className='fa-solid fa-pause';
   if(navigator.onLine){ fetchLyrics(t.artist,t.title).then(l=>{ lyricsDiv.textContent=l||'Lirik tidak tersedia'; }); }
+  setTimeout(triggerMarquee,400);
 }
 localAudio.addEventListener('timeupdate', ()=>{ if(isLocalMode && !isDragging){ const ct=localAudio.currentTime||0; const d=localAudio.duration||0; if(d>0){ const pct=(ct/d)*100; seek.value=pct; miniSeek.value=pct; cur.textContent=fmt(ct); mCur.textContent=fmt(ct); dur.textContent=fmt(d); mDur.textContent=fmt(d); } } });
 localAudio.addEventListener('ended', ()=>{ if(sleepMode){ localAudio.pause(); toggleSleep(); return; } if(repeatMode==2){ localAudio.currentTime=0; localAudio.play(); }else{ if(isShuffle){ localIdx=Math.floor(Math.random()*localTracks.length); }else{ localIdx=(localIdx+1)%localTracks.length; } playLocal(localIdx); } });
@@ -329,10 +344,10 @@ function onYouTubeIframeAPIReady(){
           if(isAd){
             if(!isAdPlaying){
               isAdPlaying=true; 
-              originalData={fTitle:fTitle.textContent,fArtist:fArtist.textContent,miniTitle:miniTitle.textContent,miniArtist:miniArtist.textContent,bg:bg.style.backgroundImage,homeBg:homeBg.style.backgroundImage,miniImg:miniImg.src};
+              originalData={fTitle:fTitleText.textContent,fArtist:fArtist.textContent,miniTitle:miniTitle.textContent,miniArtist:miniArtist.textContent,bg:bg.style.backgroundImage,homeBg:homeBg.style.backgroundImage,miniImg:miniImg.src};
               const adId=vd.video_id; const adTitle=vd.title||'Iklan';
               adBadge.classList.add('show'); 
-              fTitle.textContent=adTitle; 
+              fTitleText.textContent=adTitle; 
               fArtist.textContent=`Iklan • ${fmt(duration)}`; 
               fStatus.textContent=`Iklan akan selesai dalam ${fmt(duration)}`;
               fStatus.style.color='#ffcc00';
@@ -354,7 +369,7 @@ function onYouTubeIframeAPIReady(){
             if(isAdPlaying){ 
               isAdPlaying=false; adBadge.classList.remove('show'); 
               if(originalData){ 
-                fTitle.textContent=originalData.fTitle; fArtist.textContent=originalData.fArtist; 
+                fTitleText.textContent=originalData.fTitle; fArtist.textContent=originalData.fArtist; 
                 miniTitle.textContent=originalData.miniTitle; miniArtist.textContent=originalData.miniArtist; 
                 miniImg.src=originalData.miniImg; bg.style.backgroundImage=originalData.bg; 
                 homeBg.style.backgroundImage=originalData.homeBg; lyricsDiv.classList.remove('ad-mode'); 
@@ -396,11 +411,12 @@ function render(){
 function playFull(i){
   isLocalMode=false; localAudio.pause(); idx=i; const t=tracks[i];
   setHDBackground(homeBg,t.id); homeBg.classList.add('show'); setHDBackground(bg,t.id); setHDImage(miniImg,t.id);
-  fTitle.textContent=t.title; fArtist.textContent=t.ch; miniTitle.textContent=t.title; miniArtist.textContent=t.ch; fStatus.textContent=''; lyricsDiv.textContent='Mencari lirik...'; lyricsDiv.classList.remove('ad-mode');
+  fTitleText.textContent=t.title; fArtist.textContent=t.ch; miniTitle.textContent=t.title; miniArtist.textContent=t.ch; fStatus.textContent=''; lyricsDiv.textContent='Mencari lirik...'; lyricsDiv.classList.remove('ad-mode');
   if(liked.includes(t.id)) document.getElementById('likeBtn').className='fa-solid fa-heart'; else document.getElementById('likeBtn').className='fa-regular fa-heart';
   document.getElementById('full').classList.add('active');
   if(player&&player.loadVideoById) player.loadVideoById(t.id);
   fetchLyrics(t.ch,t.title).then(l=>{ if(isAdPlaying) return; lyricsDiv.textContent=l||'Lirik tidak tersedia'; });
+  setTimeout(triggerMarquee,400);
 }
 function openFull(){ if(tracks.length||localTracks.length||currentPlaylistTracks.length) document.getElementById('full').classList.add('active'); }
 function closeFull(){ document.getElementById('full').classList.remove('active'); }
