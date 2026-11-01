@@ -3,107 +3,124 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Music V3 - Final</title>
+<title>Music V7 Final</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
 body{background:#000;color:#fff;height:100dvh;overflow:hidden}
-#home{position:absolute;inset:0;background:#000;padding:16px;overflow-y:auto;padding-bottom:120px}
-.topHome{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
-.topHome h1{font-size:28px;font-weight:800}
-.plusBtn{width:44px;height:44px;background:#141414;border-radius:14px;display:flex;justify-content:center;align-items:center;font-size:20px}
-.searchWrap{background:#141414;border-radius:18px;padding:8px 8px 8px 18px;display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-.searchWrap input{flex:1;background:transparent;border:none;outline:none;color:#fff;font-size:15px}
-.goBtn{background:#ff1a6a;color:#fff;border:none;border-radius:14px;padding:12px 22px;font-weight:800;font-size:14px}
-.tabs{display:flex;gap:10px;margin-bottom:20px}
-.tab{padding:10px 18px;border-radius:20px;background:#141414;font-size:13px;cursor:pointer;color:#888}
-.tab.active{background:#fff;color:#000;font-weight:700}
-.empty{color:#555;text-align:center;margin-top:100px;font-size:15px}
+#home{position:absolute;inset:0;background:#000;padding:16px;overflow-y:auto;padding-bottom:135px}
+.searchWrap{background:#141414;border-radius:18px;padding:8px 8px 8px 18px;display:flex;align-items:center;margin-bottom:16px}
+.searchWrap input{flex:1;background:transparent;border:none;outline:none;color:#fff}
+.goBtn{background:#ff1a6a;color:#fff;border:none;border-radius:14px;padding:12px 22px;font-weight:800}
 .cardHome{background:#141414;border-radius:14px;padding:10px;display:flex;gap:12px;align-items:center;margin-bottom:10px;cursor:pointer}
 .cardHome img{width:52px;height:52px;border-radius:10px;object-fit:cover}
-/* MINI PLAYER - kayak screenshot 2 */
-#mini{position:fixed;bottom:0;left:0;right:0;background:#111;border-radius:26px 26px 0 0;padding:14px 16px 20px;z-index:5;display:flex;flex-direction:column;gap:10px;border-top:1px solid #222}
+#mini{position:fixed;bottom:0;left:0;right:0;background:#111;border-radius:26px 26px 0 0;padding:14px 16px 20px;z-index:5;border-top:1px solid #222}
 .miniTop{display:flex;justify-content:space-between;align-items:center}
 .miniTop img{width:48px;height:48px;border-radius:10px;background:#222;object-fit:cover}
-.miniCtrl{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
-.playPink{width:62px;height:62px;background:#ff1a6a;border-radius:50%;display:flex;justify-content:center;align-items:center;font-size:20px;cursor:pointer}
-#miniSeek{width:100%;-webkit-appearance:none;height:4px;background:#333;border-radius:10px}
-#miniSeek::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;background:#ff1a6a;border-radius:50%}
-/* FULL - kayak screenshot 1 */
-#full{position:fixed;inset:0;z-index:99;background:#000 center/cover no-repeat;transform:translateY(105%);transition:.5s}
+#miniSeek,#seek{width:100%;-webkit-appearance:none;height:4px;background:#333;border-radius:10px}
+#miniSeek::-webkit-slider-thumb,#seek::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;background:#ff1a6a;border-radius:50%}
+.miniCtrl{display:flex;justify-content:center;align-items:center;gap:14px;margin-top:12px}
+.miniCtrl i{font-size:18px;opacity:.6;cursor:pointer;width:36px;height:36px;display:flex;justify-content:center;align-items:center;border-radius:50%}
+.miniCtrl i.active{opacity:1;color:#ff1a6a;background:rgba(255,26,106,.15)}
+.playPink{width:58px!important;height:58px!important;background:#ff1a6a!important;opacity:1!important;color:#fff;border-radius:50%;display:flex;justify-content:center;align-items:center;font-size:18px;box-shadow:0 4px 20px rgba(255,26,106,.4)}
+.repeat-one{position:relative}
+.repeat-one::after{content:'1';position:absolute;top:-2px;right:2px;font-size:9px;background:#ff1a6a;color:#fff;width:14px;height:14px;border-radius:50%;display:flex;justify-content:center;align-items:center;font-weight:800}
+#full{position:fixed;inset:0;z-index:99;transform:translateY(105%);transition:.55s;overflow:hidden;background:#000}
 #full.active{transform:translateY(0)}
-#full::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.1),rgba(0,0,0,.6))}
-#slider{position:absolute;inset:0;z-index:2;display:flex;width:200%;transition:.4s}
+#bg{position:absolute;inset:0;background:#000 center/cover no-repeat;transition:.6s}
+#full.lyrics-mode #bg{filter:blur(22px) brightness(0.45);transform:scale(1.18)}
+#full::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.15),rgba(0,0,0,.75));z-index:1}
+#slider{position:absolute;inset:0;z-index:2;display:flex;width:200%;transition:.45s}
 .panel{width:50%;height:100%;position:relative}
-.bottom{position:absolute;bottom:0;left:0;right:0;z-index:3;background:rgba(20,20,20,.88);backdrop-filter:blur(30px);border-radius:32px 32px 0 0;padding:20px 20px 36px}
-#seek{width:100%;-webkit-appearance:none;height:4px;background:rgba(255,255,255,.25);border-radius:10px}
-#seek::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;background:#fff;border-radius:50%}
-.lyricBox{position:absolute;top:80px;left:0;right:0;bottom:280px;padding:20px;overflow-y:auto;white-space:pre-line;line-height:1.9;font-size:15px}
-#queue{position:absolute;right:0;top:0;bottom:0;width:85%;background:#111;z-index:10;transform:translateX(100%);transition:.4s;padding:20px;overflow-y:auto}
+.bottom{position:absolute;bottom:0;left:0;right:0;z-index:3;background:rgba(18,18,18,.92);backdrop-filter:blur(30px);border-radius:32px 32px 0 0;padding:20px 20px 36px}
+.lyricBox{position:absolute;top:88px;left:16px;right:16px;bottom:295px;padding:20px;overflow-y:auto;white-space:pre-line;line-height:2.1;font-size:14.5px;background:rgba(15,15,15,.55);backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.12);border-radius:20px}
+#queue{position:absolute;right:0;top:0;bottom:0;width:86%;background:#111;z-index:10;transform:translateX(100%);transition:.4s;padding:20px;overflow-y:auto}
 #queue.active{transform:translateX(0)}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:101;display:none;justify-content:center;align-items:center}
-.modalBox{background:#1e1e1e;border-radius:20px;padding:20px;width:85%;max-width:300px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(8px);z-index:101;display:none;justify-content:center;align-items:flex-end}
+.modalBox{width:100%;background:#1a1a1a;border-radius:28px 28px 0 0;padding:24px 20px 36px}
+.timerGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px}
+.timerBtn{background:#252525;border:1px solid rgba(255,255,255,.08);color:#fff;padding:14px 0;border-radius:14px;font-weight:600}
+.timerBtn.active{background:#ff1a6a;border-color:#ff1a6a}
+.toggleRow{display:flex;justify-content:space-between;align-items:center;margin-top:18px;background:#252525;padding:14px 16px;border-radius:14px}
+.switch{width:48px;height:28px;background:#333;border-radius:20px;position:relative;cursor:pointer}
+.switch.on{background:#ff1a6a}
+.switch::after{content:'';position:absolute;top:3px;left:3px;width:22px;height:22px;background:#fff;border-radius:50%;transition:.3s}
+.switch.on::after{left:23px}
+.countdown{margin-top:14px;text-align:center;font-size:13px;color:#4ade80;font-weight:600}
 </style>
 </head>
 <body>
 <div id="home">
-  <div class="topHome"><h1>Music</h1><div class="plusBtn">+</div></div>
-  <div class="searchWrap"><input id="q" placeholder="Cari lagu..." value="RASEN 9Lana"><button class="goBtn" onclick="search()">GO</button></div>
-  <div class="tabs"><div id="tabSearch" class="tab active" onclick="switchHome('search')">Search</div><div id="tabPlaylist" class="tab" onclick="switchHome('playlist')">Playlist</div></div>
-  <div id="list"><p class="empty">Cari lagu dulu</p></div>
+  <div style="display:flex;justify-content:space-between;margin-bottom:18px"><h1 style="font-size:28px;font-weight:800">Music</h1><div style="width:44px;height:44px;background:#141414;border-radius:14px;display:flex;justify-content:center;align-items:center">+</div></div>
+  <div class="searchWrap"><input id="q" value="9Lana Rasen" placeholder="Cari lagu..."><button class="goBtn" onclick="search()">GO</button></div>
+  <div id="list"><p style="text-align:center;opacity:.5;margin-top:80px">Cari lagu dulu 🎧</p></div>
 </div>
 
-<div id="mini" onclick="if(tracks.length) openFull(idx)">
-  <div class="miniTop"><div style="display:flex;gap:12px;align-items:center"><img id="miniImg"><div><h4 id="miniTitle" style="font-size:14px">Music</h4><p id="miniArtist" style="font-size:11px;opacity:.5">Pilih lagu</p></div></div><i id="miniLike" class="fa-regular fa-heart" style="font-size:22px;border:1px solid #333;width:44px;height:44px;border-radius:50%;display:flex;justify-content:center;align-items:center"></i></div>
-  <div><div style="display:flex;justify-content:space-between;font-size:11px;opacity:.5;margin-bottom:6px"><span id="mCur">0:00</span><span id="mDur">0:00</span></div><input type="range" id="miniSeek" value="0"></div>
-  <div class="miniCtrl"><i class="fa-solid fa-backward-step" style="font-size:18px" onclick="event.stopPropagation();prev()"></i><div class="playPink" onclick="event.stopPropagation();togglePlay()"><i id="miniPlay" class="fa-solid fa-play"></i></div><i class="fa-solid fa-forward-step" style="font-size:18px" onclick="event.stopPropagation();next()"></i></div>
-</div>
-
-<div id="full">
-  <div style="position:absolute;top:0;left:0;right:0;z-index:5;display:flex;justify-content:space-between;padding:22px 16px;align-items:center"><i class="fa-solid fa-chevron-down" onclick="closeFull()" style="font-size:20px;cursor:pointer"></i><div style="display:flex;gap:12px"><b id="tabSong" onclick="switchTab('song')" style="border-bottom:2px solid #fff;padding-bottom:3px;cursor:pointer">Song</b><span style="opacity:.4">|</span><span id="tabLyrics" onclick="switchTab('lyrics')" style="opacity:.5;cursor:pointer">Lyrics</span></div><i class="fa-solid fa-ellipsis-vertical"></i></div>
-  <div id="slider"><div class="panel"></div><div class="panel"><div id="lyrics" class="lyricBox">Klik Lyrics buat lihat lirik</div></div></div>
-  <div id="queue"><h3>Queue <i class="fa-solid fa-xmark" style="float:right" onclick="queue.classList.remove('active')"></i></h3><div id="queueList" style="margin-top:16px"></div></div>
-  <div class="bottom">
-    <div style="display:flex;justify-content:space-between"><div><h2 id="fTitle" style="font-size:18px;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">RASEN Acoustic Ver</h2><p id="fArtist" style="font-size:12px;opacity:.6">9Lana</p></div><div style="display:flex;gap:16px;font-size:22px"><i id="likeBtn" class="fa-regular fa-heart" onclick="toggleLike()"></i><i class="fa-solid fa-list-ul" onclick="document.getElementById('queue').classList.add('active')"></i></div></div>
-    <div style="display:flex;justify-content:space-between;margin-top:18px"><div style="text-align:center;cursor:pointer" onclick="openTimer()"><i class="fa-solid fa-sliders" style="display:block;font-size:18px;margin-bottom:4px"></i><span style="font-size:11px">Timer</span></div><div style="text-align:center;cursor:pointer" onclick="openEQ()"><i class="fa-solid fa-volume-high" style="display:block;font-size:18px;margin-bottom:4px"></i><span style="font-size:11px">EQ</span></div><div style="text-align:center;cursor:pointer" onclick="openTimer()"><i class="fa-regular fa-clock" style="display:block;font-size:18px;margin-bottom:4px"></i><span style="font-size:11px">Sleep</span></div><div style="text-align:center;cursor:pointer" onclick="changeSpeed()"><i class="fa-solid fa-gauge" style="display:block;font-size:18px;margin-bottom:4px"></i><span id="speedText" style="font-size:11px">1.0x</span></div><div style="text-align:center;cursor:pointer" onclick="switchTab('lyrics')"><i class="fa-solid fa-music" style="display:block;font-size:18px;margin-bottom:4px"></i><span style="font-size:11px">Lyrics</span></div></div>
-    <div style="margin-top:16px"><div style="display:flex;justify-content:space-between;opacity:.6;font-size:12px;margin-bottom:6px"><span onclick="audio.currentTime-=10"><i class="fa-solid fa-rotate-left"></i> 10</span><span onclick="audio.currentTime+=10">10 <i class="fa-solid fa-rotate-right"></i></span></div><input type="range" id="seek" value="0"><div style="display:flex;justify-content:space-between;font-size:11px;opacity:.6;margin-top:6px"><span id="cur">00:05</span><span id="dur">00:30</span></div></div>
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:18px"><i id="shuffleBtn" class="fa-solid fa-shuffle" style="opacity:.5" onclick="toggleShuffle()"></i><i class="fa-solid fa-backward-step" style="font-size:22px" onclick="prev()"></i><div onclick="togglePlay()" style="width:68px;height:68px;background:#fff;color:#000;border-radius:50%;display:flex;justify-content:center;align-items:center;font-size:26px;cursor:pointer"><i id="pIcon" class="fa-solid fa-play"></i></div><i class="fa-solid fa-forward-step" style="font-size:22px" onclick="next()"></i><i id="repeatBtn" class="fa-solid fa-repeat" style="opacity:.5" onclick="toggleRepeat()"></i></div>
+<div id="mini" onclick="if(tracks.length) openFull()">
+  <div class="miniTop"><div style="display:flex;gap:12px;align-items:center"><img id="miniImg"><div><h4 id="miniTitle">Music</h4><p id="miniArtist" style="font-size:11px;opacity:.5">Pilih lagu - Full</p></div></div><i id="miniLike" class="fa-regular fa-heart" style="font-size:20px;border:1px solid #333;width:44px;height:44px;border-radius:50%;display:flex;justify-content:center;align-items:center"></i></div>
+  <div style="margin-top:10px"><div style="display:flex;justify-content:space-between;font-size:11px;opacity:.5;margin-bottom:6px"><span id="mCur">0:00</span><span id="mDur">0:00</span></div><input type="range" id="miniSeek" value="0"></div>
+  <div class="miniCtrl" onclick="event.stopPropagation()">
+    <i id="miniShuffle" class="fa-solid fa-shuffle" onclick="toggleShuffle()"></i>
+    <i class="fa-solid fa-backward-step" onclick="prev()"></i>
+    <div class="playPink" onclick="togglePlay()"><i id="miniPlay" class="fa-solid fa-play"></i></div>
+    <i class="fa-solid fa-forward-step" onclick="next()"></i>
+    <i id="miniRepeat" class="fa-solid fa-repeat" onclick="toggleRepeat()"></i>
   </div>
 </div>
 
-<div id="timerModal" class="modal"><div class="modalBox"><h3>Timer</h3><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button onclick="setTimer(5)">5m</button><button onclick="setTimer(15)">15m</button><button onclick="setTimer(30)">30m</button><button onclick="setTimer(60)">60m</button><button onclick="clearTimer()" style="background:#ff1a6a;color:#fff">Off</button></div><button onclick="timerModal.style.display='none'" style="margin-top:14px;width:100%;padding:10px;border-radius:12px;border:none">Tutup</button></div></div>
-<div id="eqModal" class="modal"><div class="modalBox"><h3>EQ</h3><div style="margin-top:12px"><label>Bass</label><input type="range" id="bass" min="-12" max="12" value="0" style="width:100%" oninput="updateEQ()"><label>Mid</label><input type="range" id="mid" min="-12" max="12" value="0" style="width:100%" oninput="updateEQ()"><label>Treble</label><input type="range" id="treble" min="-12" max="12" value="0" style="width:100%" oninput="updateEQ()"></div><button onclick="eqModal.style.display='none'" style="margin-top:14px;width:100%;padding:10px;border-radius:12px;border:none">Tutup</button></div></div>
+<div id="full">
+  <div id="bg"></div>
+  <div style="position:absolute;top:0;left:0;right:0;z-index:5;display:flex;justify-content:space-between;padding:22px 16px"><i class="fa-solid fa-chevron-down" onclick="closeFull()" style="font-size:20px;cursor:pointer"></i><div style="display:flex;gap:14px"><b id="tabSong" onclick="switchTab('song')" style="border-bottom:2px solid #fff">Song</b><span style="opacity:.3">|</span><span id="tabLyrics" onclick="switchTab('lyrics')" style="opacity:.5">Lyrics</span></div><i class="fa-solid fa-ellipsis-vertical"></i></div>
+  <div id="slider"><div class="panel"></div><div class="panel"><div id="lyrics" class="lyricBox">Lirik blur ✨</div></div></div>
+  <div id="queue"><h3 style="display:flex;justify-content:space-between">Queue <i class="fa-solid fa-xmark" onclick="queue.classList.remove('active')"></i></h3><div id="queueList" style="margin-top:16px"></div></div>
+  <div class="bottom">
+    <div style="display:flex;justify-content:space-between"><div><h2 id="fTitle" style="font-size:19px;max-width:210px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">-</h2><p id="fArtist" style="font-size:13px;opacity:.6">-</p><p id="fStatus" style="font-size:10px;color:#4ade80;margin-top:4px"></p></div><div style="display:flex;gap:18px;font-size:22px"><i id="likeBtn" class="fa-regular fa-heart" onclick="toggleLike()"></i><i class="fa-solid fa-list-ul" onclick="queue.classList.add('active')"></i></div></div>
+    <div style="display:flex;justify-content:space-between;margin-top:20px">
+      <div onclick="openTimer()" style="text-align:center;cursor:pointer"><i class="fa-solid fa-sliders" style="display:block"></i><span style="font-size:11px">Timer</span></div>
+      <div onclick="openEQ()" style="text-align:center;cursor:pointer"><i class="fa-solid fa-volume-high" style="display:block"></i><span style="font-size:11px">EQ</span></div>
+      <div onclick="openSleep()" style="text-align:center;cursor:pointer"><i class="fa-regular fa-clock" style="display:block"></i><span style="font-size:11px">Sleep</span></div>
+      <div onclick="changeSpeed()" style="text-align:center;cursor:pointer"><i class="fa-solid fa-gauge" style="display:block"></i><span id="speedText" style="font-size:11px">1.0x</span></div>
+      <div onclick="switchTab('lyrics')" style="text-align:center;cursor:pointer"><i class="fa-solid fa-music" style="display:block"></i><span style="font-size:11px">Lyrics</span></div>
+    </div>
+    <div style="margin-top:18px"><input type="range" id="seek" value="0"><div style="display:flex;justify-content:space-between;font-size:11px;opacity:.6;margin-top:6px"><span id="cur">0:00</span><span id="dur">0:00</span></div></div>
+    <div style="display:flex;justify-content:center;align-items:center;gap:14px;margin-top:18px"><i id="shuffleBtn" class="fa-solid fa-shuffle" style="opacity:.5;cursor:pointer;width:36px;height:36px;display:flex;justify-content:center;align-items:center;border-radius:50%" onclick="toggleShuffle()"></i><i class="fa-solid fa-backward-step" style="font-size:22px;cursor:pointer" onclick="prev()"></i><div onclick="togglePlay()" style="width:70px;height:70px;background:#fff;color:#000;border-radius:50%;display:flex;justify-content:center;align-items:center;font-size:28px"><i id="pIcon" class="fa-solid fa-play"></i></div><i class="fa-solid fa-forward-step" style="font-size:22px;cursor:pointer" onclick="next()"></i><i id="repeatBtn" class="fa-solid fa-repeat" style="opacity:.5;cursor:pointer;width:36px;height:36px;display:flex;justify-content:center;align-items:center;border-radius:50%" onclick="toggleRepeat()"></i></div>
+  </div>
+  </div>
+  <div id="timerModal" class="modal" onclick="if(event.target==this) this.style.display='none'"><div class="modalBox"><div style="width:40px;height:4px;background:#333;border-radius:10px;margin:0 auto 16px"></div><h3>Timer</h3><div class="timerGrid"><button class="timerBtn" id="t5" onclick="setTimer(5)">5m</button><button class="timerBtn" id="t15" onclick="setTimer(15)">15m</button><button class="timerBtn" id="t30" onclick="setTimer(30)">30m</button><button class="timerBtn" id="t60" onclick="setTimer(60)">60m</button></div><div class="toggleRow"><span>Timer Aktif</span><div id="timerSwitch" class="switch" onclick="toggleTimerSwitch()"></div></div><p id="timerCountdown" class="countdown">Timer mati</p><button onclick="clearTimer()" style="margin-top:16px;width:100%;padding:14px;border-radius:14px;border:none;background:#252525;color:#ff1a6a;font-weight:700">Off</button><button onclick="timerModal.style.display='none'" style="margin-top:10px;width:100%;padding:14px;border-radius:14px;border:none;background:#fff;color:#000;font-weight:700">Tutup</button></div></div>
+<div id="sleepModal" class="modal" onclick="if(event.target==this) this.style.display='none'"><div class="modalBox"><div style="width:40px;height:4px;background:#333;border-radius:10px;margin:0 auto 16px"></div><h3>Sleep</h3><div class="toggleRow"><span>Sleep sampai habis</span><div id="sleepSwitch" class="switch" onclick="toggleSleepSwitch()"></div></div><p id="sleepStatus" style="text-align:center;font-size:12px;opacity:.6;margin-top:12px">Mati</p><button onclick="sleepModal.style.display='none'" style="margin-top:16px;width:100%;padding:14px;border-radius:14px;border:none;background:#fff;color:#000;font-weight:700">Tutup</button></div></div>
+<div id="eqModal" class="modal" onclick="if(event.target==this) this.style.display='none'"><div class="modalBox"><h3>EQ</h3><div style="margin-top:12px"><label>Bass</label><input type="range" id="bass" min="-12" max="12" value="0" style="width:100%" oninput="updateEQ()"><label>Mid</label><input type="range" id="mid" min="-12" max="12" value="0" style="width:100%" oninput="updateEQ()"><label>Treble</label><input type="range" id="treble" min="-12" max="12" value="0" style="width:100%" oninput="updateEQ()"></div><button onclick="eqModal.style.display='none'" style="margin-top:14px;width:100%;padding:12px;border-radius:12px;border:none">Tutup</button></div></div>
 
 <audio id="audio" crossorigin="anonymous"></audio>
 <script>
-const audio=document.getElementById('audio'),seek=document.getElementById('seek'),miniSeek=document.getElementById('miniSeek'),q=document.getElementById('q'),list=document.getElementById('list'),full=document.getElementById('full'),fTitle=document.getElementById('fTitle'),fArtist=document.getElementById('fArtist'),cur=document.getElementById('cur'),dur=document.getElementById('dur'),mCur=document.getElementById('mCur'),mDur=document.getElementById('mDur'),pIcon=document.getElementById('pIcon'),miniPlay=document.getElementById('miniPlay'),slider=document.getElementById('slider'),tabSong=document.getElementById('tabSong'),tabLyrics=document.getElementById('tabLyrics'),lyricsDiv=document.getElementById('lyrics'),miniImg=document.getElementById('miniImg'),miniTitle=document.getElementById('miniTitle'),miniArtist=document.getElementById('miniArtist'),likeBtn=document.getElementById('likeBtn'),miniLike=document.getElementById('miniLike'),speedText=document.getElementById('speedText'),queue=document.getElementById('queue'),queueList=document.getElementById('queueList'),timerModal=document.getElementById('timerModal'),eqModal=document.getElementById('eqModal');
-let tracks=[],idx=0,liked=JSON.parse(localStorage.getItem('liked')||'[]'),speeds=[0.5,0.8,1.0,1.2,1.5,2.0],sIdx=2,timer=null;
-const fmt=s=>{ let m=Math.floor(s/60), sc=Math.floor(s%60); return `${m}:${String(sc).padStart(2,'0')}`; };
-const PIPED=["https://pipedapi.kavin.rocks","https://pipedapi.adminforge.de"];
+const audio=document.getElementById('audio'),seek=document.getElementById('seek'),miniSeek=document.getElementById('miniSeek'),q=document.getElementById('q'),list=document.getElementById('list'),full=document.getElementById('full'),bg=document.getElementById('bg'),fTitle=document.getElementById('fTitle'),fArtist=document.getElementById('fArtist'),cur=document.getElementById('cur'),dur=document.getElementById('dur'),mCur=document.getElementById('mCur'),mDur=document.getElementById('mDur'),pIcon=document.getElementById('pIcon'),miniPlay=document.getElementById('miniPlay'),slider=document.getElementById('slider'),tabSong=document.getElementById('tabSong'),tabLyrics=document.getElementById('tabLyrics'),lyricsDiv=document.getElementById('lyrics'),miniImg=document.getElementById('miniImg'),miniTitle=document.getElementById('miniTitle'),miniArtist=document.getElementById('miniArtist'),likeBtn=document.getElementById('likeBtn'),speedText=document.getElementById('speedText'),queue=document.getElementById('queue'),queueList=document.getElementById('queueList'),timerModal=document.getElementById('timerModal'),sleepModal=document.getElementById('sleepModal'),eqModal=document.getElementById('eqModal'),fStatus=document.getElementById('fStatus');
+let tracks=[],idx=0,liked=JSON.parse(localStorage.getItem('liked')||'[]'),speeds=[0.5,0.8,1.0,1.2,1.5,2.0],sIdx=2,timer=null,timerInterval=null,timerRemaining=0,sleepMode=false,isShuffle=false,repeatMode=0;
+const fmt=s=>`${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;
 const audioCtx=new (window.AudioContext||window.webkitAudioContext)(); const src=audioCtx.createMediaElementSource(audio);
 const bf=audioCtx.createBiquadFilter(); bf.type='lowshelf'; bf.frequency.value=200; const mf=audioCtx.createBiquadFilter(); mf.type='peaking'; mf.frequency.value=1000; const tf=audioCtx.createBiquadFilter(); tf.type='highshelf'; tf.frequency.value=3000;
 src.connect(bf); bf.connect(mf); mf.connect(tf); tf.connect(audioCtx.destination);
-function switchHome(t){ document.getElementById('tabSearch').className=t=='search'?'tab active':'tab'; document.getElementById('tabPlaylist').className=t=='playlist'?'tab active':'tab'; if(t=='playlist'){ list.innerHTML=liked.length? '': '<p class="empty">Belum ada lagu liked</p>'; if(liked.length) showLiked(); } }
-function showLiked(){ list.innerHTML=''; tracks.filter(x=>liked.includes(x.trackId)).forEach((t,i)=>{ let d=document.createElement('div'); d.className='cardHome'; d.innerHTML=`<img src="${t.artworkUrl100}"><div><h4 style="font-size:13px">${t.trackName}</h4><p style="font-size:11px;opacity:.5">${t.artistName}</p></div>`; d.onclick=()=>playFull(tracks.indexOf(t)); list.appendChild(d); }); }
-function switchTab(t){ if(t==='lyrics'){ slider.style.transform='translateX(-50%)'; tabSong.style.borderBottom='none'; tabSong.style.opacity=.5; tabLyrics.style.borderBottom='2px solid #fff'; tabLyrics.style.opacity=1; }else{ slider.style.transform='translateX(0)'; tabLyrics.style.borderBottom='none'; tabLyrics.style.opacity=.5; tabSong.style.borderBottom='2px solid #fff'; tabSong.style.opacity=1; } }
-function toggleLike(){ let id=tracks[idx]?.trackId; if(!id)return; let i=liked.indexOf(id); if(i>=0){ liked.splice(i,1); likeBtn.className='fa-regular fa-heart'; miniLike.className='fa-regular fa-heart'; }else{ liked.push(id); likeBtn.className='fa-solid fa-heart'; likeBtn.style.color='#ff1a6a'; miniLike.className='fa-solid fa-heart'; miniLike.style.color='#ff1a6a'; } localStorage.setItem('liked',JSON.stringify(liked)); }
-function openTimer(){ timerModal.style.display='flex'; } function openEQ(){ eqModal.style.display='flex'; }
-function setTimer(m){ clearTimeout(timer); timer=setTimeout(()=>{audio.pause(); pIcon.className='fa-solid fa-play'; miniPlay.className='fa-solid fa-play';}, m*60000); timerModal.style.display='none'; } function clearTimer(){ clearTimeout(timer); }
+function switchTab(t){ if(t==='lyrics'){ slider.style.transform='translateX(-50%)'; tabSong.style.opacity=.5; tabSong.style.borderBottom='none'; tabLyrics.style.opacity=1; tabLyrics.style.borderBottom='2px solid #fff'; full.classList.add('lyrics-mode'); }else{ slider.style.transform='translateX(0)'; tabLyrics.style.opacity=.5; tabLyrics.style.borderBottom='none'; tabSong.style.opacity=1; tabSong.style.borderBottom='2px solid #fff'; full.classList.remove('lyrics-mode'); } }
+function toggleLike(){ let id=tracks[idx]?.trackId||tracks[idx]?.title; if(!id)return; let i=liked.indexOf(id); if(i>=0){ liked.splice(i,1); likeBtn.className='fa-regular fa-heart'; }else{ liked.push(id); likeBtn.className='fa-solid fa-heart'; likeBtn.style.color='#ff1a6a'; } localStorage.setItem('liked',JSON.stringify(liked)); }
+function openTimer(){ timerModal.style.display='flex'; } function openSleep(){ sleepModal.style.display='flex'; } function openEQ(){ eqModal.style.display='flex'; }
+function setTimer(min){ clearTimer(); timerRemaining=min*60; document.getElementById('timerSwitch').classList.add('on'); document.querySelectorAll('.timerBtn').forEach(b=>b.classList.remove('active')); document.getElementById('t'+min)?.classList.add('active'); timerInterval=setInterval(()=>{ timerRemaining--; let m=Math.floor(timerRemaining/60), s=timerRemaining%60; document.getElementById('timerCountdown').textContent=`⏳ Berhenti dalam ${m}:${String(s).padStart(2,'0')}`; if(timerRemaining<=0){ audio.pause(); pIcon.className='fa-solid fa-play'; miniPlay.className='fa-solid fa-play'; clearTimer(); } },1000); }
+function clearTimer(){ clearTimeout(timer); clearInterval(timerInterval); timer=null; timerInterval=null; timerRemaining=0; document.getElementById('timerSwitch').classList.remove('on'); document.querySelectorAll('.timerBtn').forEach(b=>b.classList.remove('active')); document.getElementById('timerCountdown').textContent='Timer mati'; }
+function toggleTimerSwitch(){ let sw=document.getElementById('timerSwitch'); if(sw.classList.contains('on')) clearTimer(); else setTimer(15); }
+function toggleSleepSwitch(){ let sw=document.getElementById('sleepSwitch'); sw.classList.toggle('on'); sleepMode=sw.classList.contains('on'); document.getElementById('sleepStatus').textContent=sleepMode?'✅ Aktif - berhenti di akhir lagu':'Mati'; }
 function updateEQ(){ bf.gain.value=document.getElementById('bass').value; mf.gain.value=document.getElementById('mid').value; tf.gain.value=document.getElementById('treble').value; }
 function changeSpeed(){ sIdx=(sIdx+1)%speeds.length; audio.playbackRate=speeds[sIdx]; speedText.textContent=speeds[sIdx]+'x'; }
-function toggleShuffle(){ document.getElementById('shuffleBtn').style.opacity=document.getElementById('shuffleBtn').style.opacity==1?0.5:1; }
-function toggleRepeat(){ document.getElementById('repeatBtn').style.opacity=document.getElementById('repeatBtn').style.opacity==1?0.5:1; }
-async function search(){ list.innerHTML='<p class="empty">Loading...</p>'; let res=await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(q.value)}&media=music&entity=song&limit=25`); let data=await res.json(); tracks=data.results; list.innerHTML=''; queueList.innerHTML=''; tracks.forEach((t,i)=>{ let d=document.createElement('div'); d.className='cardHome'; d.innerHTML=`<img src="${t.artworkUrl100}"><div><h4 style="font-size:13px">${t.trackName}</h4><p style="font-size:11px;opacity:.5">${t.artistName}</p></div>`; d.onclick=()=>playFull(i); list.appendChild(d); let qd=d.cloneNode(true); qd.onclick=()=>playFull(i); queueList.appendChild(qd); }); document.getElementById('tabSearch').className='tab active'; document.getElementById('tabPlaylist').className='tab'; }
+function toggleShuffle(){ isShuffle=!isShuffle; document.getElementById('miniShuffle').classList.toggle('active',isShuffle); document.getElementById('shuffleBtn').classList.toggle('active',isShuffle); document.getElementById('shuffleBtn').style.opacity=isShuffle?1:.5; document.getElementById('shuffleBtn').style.color=isShuffle?'#ff1a6a':''; }
+function toggleRepeat(){ repeatMode=(repeatMode+1)%3; let miniR=document.getElementById('miniRepeat'), fullR=document.getElementById('repeatBtn'); [miniR,fullR].forEach(btn=>{ btn.classList.remove('active','repeat-one'); btn.style.opacity='.6'; btn.style.color=''; if(repeatMode==1){ btn.classList.add('active'); btn.style.opacity=1; } if(repeatMode==2){ btn.classList.add('active','repeat-one'); btn.style.opacity=1; } }); }
+async function search(){ list.innerHTML='<p style="text-align:center;opacity:.5;margin-top:20px">Mencari full...</p>'; let query=q.value.trim()||'9Lana Rasen'; let results=[]; try{ let r=await fetch(`https://saavn.dev/api/search/songs?query=${encodeURIComponent(query)}`); let d=await r.json(); if(d.data?.results?.length){ results=d.data.results.map(s=>({ title:s.name, artist:s.artists?.primary?.[0]?.name||'9Lana', image:s.image?.[2]?.url||s.image?.[1]?.url, fullUrl:s.downloadUrl?.[4]?.url||s.downloadUrl?.[3]?.url, duration:s.duration, trackId:s.id, type:'FULL' })); } }catch(e){} if(!results.length){ let r=await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(query)}&media=music&entity=song&limit=15`); let d=await r.json(); results=d.results.map(t=>({ title:t.trackName, artist:t.artistName, image:t.artworkUrl100, fullUrl:t.previewUrl, duration:30, trackId:t.trackId, type:'PREVIEW' })); } tracks=results; list.innerHTML=''; queueList.innerHTML=''; results.forEach((t,i)=>{ let div=document.createElement('div'); div.className='cardHome'; div.innerHTML=`<img src="${t.image}"><div style="flex:1"><h4 style="font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px">${t.title}</h4><p style="font-size:11px;opacity:.5">${t.artist} • ${t.type}</p></div>`; div.onclick=()=>playFull(i); list.appendChild(div); let qd=div.cloneNode(true); qd.onclick=()=>playFull(i); queueList.appendChild(qd); }); }
 async function fetchLyrics(a,t){ try{ let r=await fetch(`https://api.lyrics.ovh/v1/${encodeURIComponent(a)}/${encodeURIComponent(t)}`); let j=await r.json(); return j.lyrics||'Lirik tidak ditemukan'; }catch{ return 'Lirik tidak tersedia'; } }
-async function getFull(a,t){ for(let inst of PIPED){ try{ let sr=await fetch(`${inst}/search?q=${encodeURIComponent(a+' '+t)}&filter=music_songs`); let sd=await sr.json(); let it=sd.items?.[0]; if(!it)continue; let vid=it.url.split('v=')[1]||it.url.split('/').pop(); let st=await fetch(`${inst}/streams/${vid}`); let sj=await st.json(); let best=sj.audioStreams?.sort((x,y)=>y.bitrate-x.bitrate)[0]; if(best?.url) return best.url; }catch{} } return null; }
-async function playFull(i){ idx=i; let t=tracks[i]; fTitle.textContent=t.trackName; fArtist.textContent=t.artistName; miniTitle.textContent=t.trackName; miniArtist.textContent=t.artistName; miniImg.src=t.artworkUrl100; full.style.backgroundImage=`url('${t.artworkUrl100.replace('100x100','1000x1000')}')`; full.classList.add('active'); if(audioCtx.state==='suspended') audioCtx.resume(); likeBtn.className=liked.includes(t.trackId)?'fa-solid fa-heart':'fa-regular fa-heart'; if(liked.includes(t.trackId)) likeBtn.style.color='#ff1a6a'; lyricsDiv.textContent='Loading lirik...'; fetchLyrics(t.artistName,t.trackName).then(l=>lyricsDiv.textContent=l); let fullUrl=await getFull(t.artistName,t.trackName); audio.src=fullUrl||t.previewUrl; audio.play(); pIcon.className='fa-solid fa-pause'; miniPlay.className='fa-solid fa-pause'; }
-function closeFull(){ full.classList.remove('active'); } function togglePlay(){ if(audio.paused){ audio.play(); pIcon.className='fa-solid fa-pause'; miniPlay.className='fa-solid fa-pause'; if(audioCtx.state==='suspended') audioCtx.resume(); }else{ audio.pause(); pIcon.className='fa-solid fa-play'; miniPlay.className='fa-solid fa-play'; } }
-function next(){ idx=(idx+1)%tracks.length; playFull(idx); } function prev(){ idx=(idx-1+tracks.length)%tracks.length; playFull(idx); }
+async function playFull(i){ idx=i; let t=tracks[i]; fTitle.textContent=t.title; fArtist.textContent=t.artist; miniTitle.textContent=t.title; miniArtist.textContent=t.artist; miniImg.src=t.image; bg.style.backgroundImage=`url('${t.image}')`; full.classList.add('active'); if(audioCtx.state==='suspended') audioCtx.resume(); fStatus.textContent=t.type==='FULL'?`✅ FULL ${Math.floor(t.duration/60)}:${String(t.duration%60).padStart(2,'0')}`:'⚠️ Preview 30s'; fStatus.style.color=t.type==='FULL'?'#4ade80':'#facc15'; lyricsDiv.textContent='Loading lirik...'; fetchLyrics(t.artist,t.title).then(l=>lyricsDiv.textContent=l); audio.src=t.fullUrl; audio.play(); pIcon.className='fa-solid fa-pause'; miniPlay.className='fa-solid fa-pause'; }
+function openFull(){ full.classList.add('active'); } function closeFull(){ full.classList.remove('active'); full.classList.remove('lyrics-mode'); switchTab('song'); }
+function togglePlay(){ if(audio.paused){ audio.play(); pIcon.className='fa-solid fa-pause'; miniPlay.className='fa-solid fa-pause'; if(audioCtx.state==='suspended') audioCtx.resume(); }else{ audio.pause(); pIcon.className='fa-solid fa-play'; miniPlay.className='fa-solid fa-play'; } }
+function next(){ if(isShuffle){ idx=Math.floor(Math.random()*tracks.length); }else{ idx=(idx+1)%tracks.length; } playFull(idx); }
+function prev(){ idx=(idx-1+tracks.length)%tracks.length; playFull(idx); }
 audio.ontimeupdate=()=>{ let p=audio.duration?audio.currentTime/audio.duration*100:0; seek.value=p; miniSeek.value=p; cur.textContent=fmt(audio.currentTime); mCur.textContent=fmt(audio.currentTime); if(audio.duration){ dur.textContent=fmt(audio.duration); mDur.textContent=fmt(audio.duration); } };
 seek.oninput=()=>{ if(audio.duration) audio.currentTime=seek.value/100*audio.duration; }; miniSeek.oninput=()=>{ if(audio.duration) audio.currentTime=miniSeek.value/100*audio.duration; };
-audio.onended=()=>next();
+audio.onended=()=>{ if(sleepMode){ audio.pause(); pIcon.className='fa-solid fa-play'; miniPlay.className='fa-solid fa-play'; toggleSleepSwitch(); return; } if(repeatMode==2){ audio.currentTime=0; audio.play(); }else next(); };
 q.addEventListener('keydown',e=>{ if(e.key==='Enter') search(); });
 search();
 </script>
 </body>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  </html>
+</html>
