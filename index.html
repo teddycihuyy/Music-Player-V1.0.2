@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Music Player - Audius</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+body{background:#000;color:#fff;height:100dvh;overflow:hidden}
+#player{width:100%;height:100dvh;background:#111 center/cover no-repeat;position:relative;transition:.5s}
+#player::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom, rgba(0,0,0,.65) 0%, transparent 40%, rgba(0,0,0,.5) 100%)}
+.top{position:absolute;top:0;left:0;right:0;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:20px 16px}
+.top i{font-size:18px;cursor:pointer}
+.tabs{font-size:14px}.tabs b{border-bottom:2px solid #fff;padding-bottom:5px}.tabs span{opacity:.4;margin:0 8px}
+.searchBox{position:absolute;top:60px;left:16px;right:16px;z-index:11;display:flex;gap:8px}
+.searchBox input{flex:1;background:rgba(255,255,255,.15);backdrop-filter:blur(20px);border:none;border-radius:20px;padding:10px 16px;color:#fff;outline:none}
+.searchBox button{background:#fff;color:#000;border:none;border-radius:20px;padding:10px 18px;font-weight:bold}
+.bottom{position:absolute;bottom:0;left:0;right:0;z-index:9;background:rgba(28,28,30,.55);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border-radius:32px 32px 0 0;padding:20px 20px 32px}
+.info{display:flex;justify-content:space-between;align-items:center}
+.info h2{font-size:18px;max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.info p{font-size:12px;opacity:.6;margin-top:2px}
+.func{display:flex;justify-content:space-between;margin-top:24px;opacity:.85}
+.func div{text-align:center;font-size:10px}.func i{display:block;font-size:18px;margin-bottom:5px}
+.progress{margin-top:18px}
+#seek{width:100%;-webkit-appearance:none;height:3px;background:rgba(255,255,255,.25);border-radius:2px}
+#seek::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;background:#fff;border-radius:50%}
+.time{display:flex;justify-content:space-between;font-size:11px;opacity:.6;margin-top:6px}
+.main{display:flex;justify-content:space-between;align-items:center;margin-top:18px;padding:0 6px}
+#playBtn{width:66px;height:66px;background:#fff;color:#000;border-radius:50%;display:flex;justify-content:center;align-items:center;font-size:24px}
+#list{position:absolute;top:105px;left:0;right:0;bottom:280px;z-index:8;overflow-y:auto;padding:0 16px;display:none}
+.card{display:flex;gap:12px;background:rgba(255,255,255,.1);backdrop-filter:blur(15px);padding:10px;border-radius:14px;margin-bottom:10px;cursor:pointer}
+.card img{width:52px;height:52px;border-radius:8px;object-fit:cover}
+.card h4{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px}
+.card p{font-size:11px;opacity:.6}
+</style>
+</head>
+<body>
+<div id="player" style="background-image:url('https://i.imgur.com/8QmQh2j.jpeg')">
+  <div class="top">
+    <i class="fa-solid fa-chevron-down" onclick="document.getElementById('list').style.display='none'"></i>
+    <div class="tabs"><b>Song</b><span>|</span>Lyrics</div>
+    <i class="fa-solid fa-ellipsis-vertical"></i>
+  </div>
+  <div class="searchBox">
+    <input id="q" placeholder="Cari lagu anime, misal: Chou-Chou..." value="Chou-Chou Nakano">
+    <button onclick="search()">Cari</button>
+  </div>
+  <div id="list"></div>
+  <div class="bottom">
+    <div class="info">
+      <div><h2 id="title">Chou-Chou Nakano Su</h2><p id="artist">Audius • No Ads</p></div>
+      <div style="display:flex;gap:16px;font-size:22px"><i id="like" class="fa-regular fa-heart" onclick="this.classList.toggle('fa-solid');this.style.color='#ff5a6b'"></i><i class="fa-solid fa-list-ul" onclick="document.getElementById('list').style.display='block'"></i></div>
+    </div>
+    <div class="func">
+      <div><i class="fa-solid fa-sliders"></i>Timer</div>
+      <div><i class="fa-solid fa-volume-high"></i>EQ</div>
+      <div><i class="fa-regular fa-clock"></i>Sleep</div>
+      <div><i class="fa-solid fa-gauge"></i>1.0x</div>
+      <div><i class="fa-solid fa-music"></i>Lyrics</div>
+    </div>
+    <div class="progress">
+      <div style="display:flex;justify-content:space-between;opacity:.7;margin-bottom:6px"><span onclick="audio.currentTime-=10"><i class="fa-solid fa-rotate-left"></i> 10</span><span onclick="audio.currentTime+=10">10 <i class="fa-solid fa-rotate-right"></i></span></div>
+      <input type="range" id="seek" value="0">
+      <div class="time"><span id="cur">00:00</span><span id="dur">00:00</span></div>
+    </div>
+    <div class="main">
+      <i class="fa-solid fa-shuffle" style="opacity:.6"></i>
+      <i class="fa-solid fa-backward-step" onclick="prev()"></i>
+      <div id="playBtn" onclick="toggle()"><i id="pIcon" class="fa-solid fa-pause"></i></div>
+      <i class="fa-solid fa-forward-step" onclick="next()"></i>
+      <i class="fa-solid fa-repeat" style="opacity:.6"></i>
+    </div>
+  </div>
+</div>
+<audio id="audio"></audio>
+<script>
+const audio=document.getElementById('audio'),seek=document.getElementById('seek'),title=document.getElementById('title'),artist=document.getElementById('artist'),cur=document.getElementById('cur'),dur=document.getElementById('dur'),pIcon=document.getElementById('pIcon'),player=document.getElementById('player'),listEl=document.getElementById('list'),q=document.getElementById('q');
+let tracks=[],idx=0;
+const APP_NAME='teddy_music_player';
+function fmt(s){let m=Math.floor(s/60),sc=Math.floor(s%60);return String(m).padStart(2,'0')+':'+String(sc).padStart(2,'0')}
+function toggle(){if(audio.paused){audio.play();pIcon.className='fa-solid fa-pause'}else{audio.pause();pIcon.className='fa-solid fa-play'}}
+audio.ontimeupdate=()=>{seek.value=audio.duration?audio.currentTime/audio.duration*100:0;cur.textContent=fmt(audio.currentTime);if(audio.duration)dur.textContent=fmt(audio.duration)}
+seek.oninput=()=>{if(audio.duration)audio.currentTime=seek.value/100*audio.duration}
+async function search(){
+  let query=q.value||'anime';
+  listEl.style.display='block'; listEl.innerHTML='<p style="opacity:.6;text-align:center;margin-top:20px">Loading...</p>';
+  try{
+    let host='https://discoveryprovider.audius.co';
+    // get healthy host
+    let res=await fetch(`https://api.audius.co/v1/tracks/search?query=${encodeURIComponent(query)}&app_name=${APP_NAME}`);
+    let data=await res.json();
+    tracks=data.data||[];
+    if(!tracks.length){listEl.innerHTML='<p style="opacity:.6;text-align:center">Gak ketemu, coba kata lain</p>';return}
+    listEl.innerHTML='';
+    tracks.forEach((t,i)=>{
+      let div=document.createElement('div');div.className='card';
+      let img=t.artwork? t.artwork['480x480']||t.artwork['150x150'] : 'https://i.imgur.com/8QmQh2j.jpeg';
+      div.innerHTML=`<img src="${img}"><div><h4>${t.title}</h4><p>${t.user?.name||'Audius Artist'}</p></div>`;
+      div.onclick=()=>play(i);
+      listEl.appendChild(div);
+    });
+  }catch(e){listEl.innerHTML='<p>Error, coba lagi</p>';console.error(e)}
+}
+function play(i){
+  idx=i;let t=tracks[i];
+  title.textContent=t.title; artist.textContent=t.user?.name||'Audius';
+  let art=t.artwork? t.artwork['480x480']||t.artwork['150x150'] : '';
+  if(art) player.style.backgroundImage=`url('${art}')`;
+  audio.src=`https://discoveryprovider.audius.co/v1/tracks/${t.id}/stream?app_name=${APP_NAME}`;
+  audio.play(); pIcon.className='fa-solid fa-pause'; listEl.style.display='none';
+}
+function next(){if(!tracks.length)return;idx=(idx+1)%tracks.length;play(idx)}
+function prev(){if(!tracks.length)return;idx=(idx-1+tracks.length)%tracks.length;play(idx)}
+q.addEventListener('keydown',e=>{if(e.key==='Enter')search()})
+// auto search pertama
+search();
+</script>
+</body>
+  </html>
