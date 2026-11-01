@@ -109,12 +109,20 @@ async function fetchYT(query){
   try{
     let r=await fetch(`${PROXY_URL}?q=${encodeURIComponent(query)}`);
     let data=await r.json();
+    if(!Array.isArray(data)) data = data.out || [];
     let res=[];
     for(let v of data.slice(0,6)){
       let ar=await fetch(`${PROXY_URL}?id=${v.videoId}`);
       let ad=await ar.json();
       if(!ad.audioUrl) continue;
-      res.push({ title:v.title, artist:v.author, image:v.videoThumbnails?.[2]?.url||v.videoThumbnails?.[0]?.url, fullUrl:ad.audioUrl, trackId:v.videoId, type:'FULL • No Ads • Private' });
+      res.push({ 
+        title:v.title, 
+        artist:v.author || 'Unknown', 
+        image: v.thumbnail || v.image || `https://i.ytimg.com/vi/${v.videoId}/hqdefault.jpg`, 
+        fullUrl:ad.audioUrl, 
+        trackId:v.videoId, 
+        type:'FULL • No Ads • Private' 
+      });
     }
     if(res.length) return res;
   }catch(e){ console.log(e); }
