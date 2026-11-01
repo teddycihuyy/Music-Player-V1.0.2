@@ -6,23 +6,25 @@
 <title>Music V1.0.2</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;-webkit-tap-highlight-color:transparent!important;outline:none!important}
+*:focus,*:active{outline:none!important;box-shadow:none!important}
+button,div,i{user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:rgba(0,0,0,0)!important}
 body{background:#000;color:#fff;height:100dvh;overflow:hidden}
-#home{position:absolute;inset:0;background:#000;padding:16px;overflow-y:auto;padding-bottom:135px}
+#home{position:absolute;inset:0;background:#000;padding:16px;overflow-y:auto;padding-bottom:155px}
 .searchWrap{background:#141414;border-radius:18px;padding:8px 8px 8px 18px;display:flex;align-items:center;margin-bottom:16px}
 .searchWrap input{flex:1;background:transparent;border:none;outline:none;color:#fff}
 .goBtn{background:#ff1a6a;color:#fff;border:none;border-radius:14px;padding:12px 22px;font-weight:800}
 .cardHome{background:#141414;border-radius:14px;padding:10px;display:flex;gap:12px;align-items:center;margin-bottom:10px;cursor:pointer}
 .cardHome img{width:52px;height:52px;border-radius:10px;object-fit:cover}
-#mini{position:fixed;bottom:0;left:0;right:0;background:#111;border-radius:26px 26px 0 0;padding:14px 16px 20px;z-index:5;border-top:1px solid #222}
+#mini{position:fixed;bottom:0;left:0;right:0;background:#111;border-radius:26px 26px 0 0;padding:14px 16px 22px;z-index:5;border-top:1px solid #222}
 .miniTop{display:flex;justify-content:space-between;align-items:center}
 .miniTop img{width:48px;height:48px;border-radius:10px;background:#222;object-fit:cover}
-#miniSeek,#seek{width:100%;-webkit-appearance:none;height:4px;background:#333;border-radius:10px}
+#miniSeek,#seek{width:100%;-webkit-appearance:none;height:4px;background:#333;border-radius:10px;outline:none!important}
 #miniSeek::-webkit-slider-thumb,#seek::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;background:#ff1a6a;border-radius:50%}
-.miniCtrl{display:flex;justify-content:center;align-items:center;gap:14px;margin-top:12px}
-.miniCtrl i{font-size:18px;opacity:.6;cursor:pointer;width:36px;height:36px;display:flex;justify-content:center;align-items:center;border-radius:50%}
+.miniCtrl{display:flex;justify-content:space-between;align-items:center;gap:0;margin-top:14px;padding:0 6px}
+.miniCtrl i{font-size:19px;opacity:.6;cursor:pointer;width:42px;height:42px;display:flex;justify-content:center;align-items:center;border-radius:50%}
 .miniCtrl i.active{opacity:1;color:#ff1a6a;background:rgba(255,26,106,.15)}
-.playPink{width:58px!important;height:58px!important;background:#ff1a6a!important;opacity:1!important;color:#fff;border-radius:50%;display:flex;justify-content:center;align-items:center;font-size:18px;box-shadow:0 4px 20px rgba(255,26,106,.4)}
+.playPink{width:62px!important;height:62px!important;background:#ff1a6a!important;opacity:1!important;color:#fff;border-radius:50%;display:flex;justify-content:center;align-items:center;font-size:20px;box-shadow:0 4px 20px rgba(255,26,106,.4);margin:0 6px}
 .repeat-one{position:relative}
 .repeat-one::after{content:'1';position:absolute;top:-2px;right:2px;font-size:9px;background:#ff1a6a;color:#fff;width:14px;height:14px;border-radius:50%;display:flex;justify-content:center;align-items:center;font-weight:800}
 #full{position:fixed;inset:0;z-index:99;transform:translateY(105%);transition:.55s;overflow:hidden;background:#000}
@@ -33,7 +35,7 @@ body{background:#000;color:#fff;height:100dvh;overflow:hidden}
 #slider{position:absolute;inset:0;z-index:2;display:flex;width:200%;transition:.45s}
 .panel{width:50%;height:100%;position:relative}
 .bottom{position:absolute;bottom:0;left:0;right:0;z-index:3;background:rgba(18,18,18,.92);backdrop-filter:blur(30px);border-radius:32px 32px 0 0;padding:20px 20px 36px}
-.lyricBox{position:absolute;top:88px;left:16px;right:16px;bottom:295px;padding:20px;overflow-y:auto;white-space:pre-line;line-height:2.1;font-size:14.5px;background:rgba(15,15,15,.55);backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.12);border-radius:20px}
+.lyricBox{position:absolute;top:88px;left:16px;right:16px;bottom:325px;padding:20px;overflow-y:auto;white-space:pre-line;line-height:2.2;font-size:14.5px;background:rgba(15,15,15,.55);backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.12);border-radius:20px}
 #queue{position:absolute;right:0;top:0;bottom:0;width:86%;background:#111;z-index:10;transform:translateX(100%);transition:.4s;padding:20px;overflow-y:auto}
 #queue.active{transform:translateX(0)}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(8px);z-index:101;display:none;justify-content:center;align-items:flex-end}
@@ -52,12 +54,11 @@ body{background:#000;color:#fff;height:100dvh;overflow:hidden}
 <body>
 <div id="home">
   <div style="display:flex;justify-content:space-between;margin-bottom:18px"><h1 style="font-size:28px;font-weight:800">Music</h1><div style="width:44px;height:44px;background:#141414;border-radius:14px;display:flex;justify-content:center;align-items:center">+</div></div>
-  <div class="searchWrap"><input id="q" value="9Lana Rasen" placeholder="Cari lagu..."><button class="goBtn" onclick="search()">GO</button></div>
-  <div id="list"><p style="text-align:center;opacity:.5;margin-top:80px">Cari lagu dulu 🎧</p></div>
+  <div class="searchWrap"><input id="q" placeholder="Cari: Yoasobi, Ado, 9Lana..." value=""><button class="goBtn" onclick="search()">GO</button></div>
+  <div id="list"></div>
 </div>
-
 <div id="mini" onclick="if(tracks.length) openFull()">
-  <div class="miniTop"><div style="display:flex;gap:12px;align-items:center"><img id="miniImg"><div><h4 id="miniTitle">Music</h4><p id="miniArtist" style="font-size:11px;opacity:.5">Pilih lagu - Full</p></div></div><i id="miniLike" class="fa-regular fa-heart" style="font-size:20px;border:1px solid #333;width:44px;height:44px;border-radius:50%;display:flex;justify-content:center;align-items:center"></i></div>
+  <div class="miniTop"><div style="display:flex;gap:12px;align-items:center"><img id="miniImg"><div><h4 id="miniTitle">Music</h4><p id="miniArtist" style="font-size:11px;opacity:.5">Beranda random ✨</p></div></div><i id="miniLike" class="fa-regular fa-heart" style="font-size:20px;border:1px solid #333;width:44px;height:44px;border-radius:50%;display:flex;justify-content:center;align-items:center"></i></div>
   <div style="margin-top:10px"><div style="display:flex;justify-content:space-between;font-size:11px;opacity:.5;margin-bottom:6px"><span id="mCur">0:00</span><span id="mDur">0:00</span></div><input type="range" id="miniSeek" value="0"></div>
   <div class="miniCtrl" onclick="event.stopPropagation()">
     <i id="miniShuffle" class="fa-solid fa-shuffle" onclick="toggleShuffle()"></i>
@@ -67,26 +68,25 @@ body{background:#000;color:#fff;height:100dvh;overflow:hidden}
     <i id="miniRepeat" class="fa-solid fa-repeat" onclick="toggleRepeat()"></i>
   </div>
 </div>
-
 <div id="full">
   <div id="bg"></div>
-  <div style="position:absolute;top:0;left:0;right:0;z-index:5;display:flex;justify-content:space-between;padding:22px 16px"><i class="fa-solid fa-chevron-down" onclick="closeFull()" style="font-size:20px;cursor:pointer"></i><div style="display:flex;gap:14px"><b id="tabSong" onclick="switchTab('song')" style="border-bottom:2px solid #fff">Song</b><span style="opacity:.3">|</span><span id="tabLyrics" onclick="switchTab('lyrics')" style="opacity:.5">Lyrics</span></div><i class="fa-solid fa-ellipsis-vertical"></i></div>
-  <div id="slider"><div class="panel"></div><div class="panel"><div id="lyrics" class="lyricBox">Lirik blur ✨</div></div></div>
+  <div style="position:absolute;top:0;left:0;right:0;z-index:5;display:flex;justify-content:space-between;padding:22px 16px"><i class="fa-solid fa-chevron-down" onclick="closeFull()" style="font-size:20px"></i><div style="display:flex;gap:14px"><b id="tabSong" onclick="switchTab('song')" style="border-bottom:2px solid #fff">Song</b><span style="opacity:.3">|</span><span id="tabLyrics" onclick="switchTab('lyrics')" style="opacity:.5">Lyrics</span></div><i class="fa-solid fa-ellipsis-vertical"></i></div>
+  <div id="slider"><div class="panel"></div><div class="panel"><div id="lyrics" class="lyricBox">Lirik ada jarak dari glass bawah ✨</div></div></div>
   <div id="queue"><h3 style="display:flex;justify-content:space-between">Queue <i class="fa-solid fa-xmark" onclick="queue.classList.remove('active')"></i></h3><div id="queueList" style="margin-top:16px"></div></div>
   <div class="bottom">
     <div style="display:flex;justify-content:space-between"><div><h2 id="fTitle" style="font-size:19px;max-width:210px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">-</h2><p id="fArtist" style="font-size:13px;opacity:.6">-</p><p id="fStatus" style="font-size:10px;color:#4ade80;margin-top:4px"></p></div><div style="display:flex;gap:18px;font-size:22px"><i id="likeBtn" class="fa-regular fa-heart" onclick="toggleLike()"></i><i class="fa-solid fa-list-ul" onclick="queue.classList.add('active')"></i></div></div>
     <div style="display:flex;justify-content:space-between;margin-top:20px">
-      <div onclick="openTimer()" style="text-align:center;cursor:pointer"><i class="fa-solid fa-sliders" style="display:block"></i><span style="font-size:11px">Timer</span></div>
-      <div onclick="openEQ()" style="text-align:center;cursor:pointer"><i class="fa-solid fa-volume-high" style="display:block"></i><span style="font-size:11px">EQ</span></div>
-      <div onclick="openSleep()" style="text-align:center;cursor:pointer"><i class="fa-regular fa-clock" style="display:block"></i><span style="font-size:11px">Sleep</span></div>
-      <div onclick="changeSpeed()" style="text-align:center;cursor:pointer"><i class="fa-solid fa-gauge" style="display:block"></i><span id="speedText" style="font-size:11px">1.0x</span></div>
-      <div onclick="switchTab('lyrics')" style="text-align:center;cursor:pointer"><i class="fa-solid fa-music" style="display:block"></i><span style="font-size:11px">Lyrics</span></div>
+      <div onclick="openTimer()" style="text-align:center"><i class="fa-solid fa-sliders" style="display:block"></i><span style="font-size:11px">Timer</span></div>
+      <div onclick="openEQ()" style="text-align:center"><i class="fa-solid fa-volume-high" style="display:block"></i><span style="font-size:11px">EQ</span></div>
+      <div onclick="openSleep()" style="text-align:center"><i class="fa-regular fa-clock" style="display:block"></i><span style="font-size:11px">Sleep</span></div>
+      <div onclick="changeSpeed()" style="text-align:center"><i class="fa-solid fa-gauge" style="display:block"></i><span id="speedText" style="font-size:11px">1.0x</span></div>
+      <div onclick="switchTab('lyrics')" style="text-align:center"><i class="fa-solid fa-music" style="display:block"></i><span style="font-size:11px">Lyrics</span></div>
     </div>
     <div style="margin-top:18px"><input type="range" id="seek" value="0"><div style="display:flex;justify-content:space-between;font-size:11px;opacity:.6;margin-top:6px"><span id="cur">0:00</span><span id="dur">0:00</span></div></div>
-    <div style="display:flex;justify-content:center;align-items:center;gap:14px;margin-top:18px"><i id="shuffleBtn" class="fa-solid fa-shuffle" style="opacity:.5;cursor:pointer;width:36px;height:36px;display:flex;justify-content:center;align-items:center;border-radius:50%" onclick="toggleShuffle()"></i><i class="fa-solid fa-backward-step" style="font-size:22px;cursor:pointer" onclick="prev()"></i><div onclick="togglePlay()" style="width:70px;height:70px;background:#fff;color:#000;border-radius:50%;display:flex;justify-content:center;align-items:center;font-size:28px"><i id="pIcon" class="fa-solid fa-play"></i></div><i class="fa-solid fa-forward-step" style="font-size:22px;cursor:pointer" onclick="next()"></i><i id="repeatBtn" class="fa-solid fa-repeat" style="opacity:.5;cursor:pointer;width:36px;height:36px;display:flex;justify-content:center;align-items:center;border-radius:50%" onclick="toggleRepeat()"></i></div>
+    <div style="display:flex;justify-content:center;align-items:center;gap:14px;margin-top:18px"><i id="shuffleBtn" class="fa-solid fa-shuffle" style="opacity:.5;width:36px;height:36px;display:flex;justify-content:center;align-items:center;border-radius:50%" onclick="toggleShuffle()"></i><i class="fa-solid fa-backward-step" style="font-size:22px" onclick="prev()"></i><div onclick="togglePlay()" style="width:70px;height:70px;background:#fff;color:#000;border-radius:50%;display:flex;justify-content:center;align-items:center;font-size:28px"><i id="pIcon" class="fa-solid fa-play"></i></div><i class="fa-solid fa-forward-step" style="font-size:22px" onclick="next()"></i><i id="repeatBtn" class="fa-solid fa-repeat" style="opacity:.5;width:36px;height:36px;display:flex;justify-content:center;align-items:center;border-radius:50%" onclick="toggleRepeat()"></i></div>
   </div>
-  </div>
-  <div id="timerModal" class="modal" onclick="if(event.target==this) this.style.display='none'"><div class="modalBox"><div style="width:40px;height:4px;background:#333;border-radius:10px;margin:0 auto 16px"></div><h3>Timer</h3><div class="timerGrid"><button class="timerBtn" id="t5" onclick="setTimer(5)">5m</button><button class="timerBtn" id="t15" onclick="setTimer(15)">15m</button><button class="timerBtn" id="t30" onclick="setTimer(30)">30m</button><button class="timerBtn" id="t60" onclick="setTimer(60)">60m</button></div><div class="toggleRow"><span>Timer Aktif</span><div id="timerSwitch" class="switch" onclick="toggleTimerSwitch()"></div></div><p id="timerCountdown" class="countdown">Timer mati</p><button onclick="clearTimer()" style="margin-top:16px;width:100%;padding:14px;border-radius:14px;border:none;background:#252525;color:#ff1a6a;font-weight:700">Off</button><button onclick="timerModal.style.display='none'" style="margin-top:10px;width:100%;padding:14px;border-radius:14px;border:none;background:#fff;color:#000;font-weight:700">Tutup</button></div></div>
+</div>
+<div id="timerModal" class="modal" onclick="if(event.target==this) this.style.display='none'"><div class="modalBox"><div style="width:40px;height:4px;background:#333;border-radius:10px;margin:0 auto 16px"></div><h3>Timer</h3><div class="timerGrid"><button class="timerBtn" id="t5" onclick="setTimer(5)">5m</button><button class="timerBtn" id="t15" onclick="setTimer(15)">15m</button><button class="timerBtn" id="t30" onclick="setTimer(30)">30m</button><button class="timerBtn" id="t60" onclick="setTimer(60)">60m</button></div><div class="toggleRow"><span>Timer Aktif</span><div id="timerSwitch" class="switch" onclick="toggleTimerSwitch()"></div></div><p id="timerCountdown" class="countdown">Timer mati</p><button onclick="clearTimer()" style="margin-top:16px;width:100%;padding:14px;border-radius:14px;border:none;background:#252525;color:#ff1a6a;font-weight:700">Off</button><button onclick="timerModal.style.display='none'" style="margin-top:10px;width:100%;padding:14px;border-radius:14px;border:none;background:#fff;color:#000;font-weight:700">Tutup</button></div></div>
 <div id="sleepModal" class="modal" onclick="if(event.target==this) this.style.display='none'"><div class="modalBox"><div style="width:40px;height:4px;background:#333;border-radius:10px;margin:0 auto 16px"></div><h3>Sleep</h3><div class="toggleRow"><span>Sleep sampai habis</span><div id="sleepSwitch" class="switch" onclick="toggleSleepSwitch()"></div></div><p id="sleepStatus" style="text-align:center;font-size:12px;opacity:.6;margin-top:12px">Mati</p><button onclick="sleepModal.style.display='none'" style="margin-top:16px;width:100%;padding:14px;border-radius:14px;border:none;background:#fff;color:#000;font-weight:700">Tutup</button></div></div>
 <div id="eqModal" class="modal" onclick="if(event.target==this) this.style.display='none'"><div class="modalBox"><h3>EQ</h3><div style="margin-top:12px"><label>Bass</label><input type="range" id="bass" min="-12" max="12" value="0" style="width:100%" oninput="updateEQ()"><label>Mid</label><input type="range" id="mid" min="-12" max="12" value="0" style="width:100%" oninput="updateEQ()"><label>Treble</label><input type="range" id="treble" min="-12" max="12" value="0" style="width:100%" oninput="updateEQ()"></div><button onclick="eqModal.style.display='none'" style="margin-top:14px;width:100%;padding:12px;border-radius:12px;border:none">Tutup</button></div></div>
 
@@ -107,11 +107,46 @@ function toggleTimerSwitch(){ let sw=document.getElementById('timerSwitch'); if(
 function toggleSleepSwitch(){ let sw=document.getElementById('sleepSwitch'); sw.classList.toggle('on'); sleepMode=sw.classList.contains('on'); document.getElementById('sleepStatus').textContent=sleepMode?'✅ Aktif - berhenti di akhir lagu':'Mati'; }
 function updateEQ(){ bf.gain.value=document.getElementById('bass').value; mf.gain.value=document.getElementById('mid').value; tf.gain.value=document.getElementById('treble').value; }
 function changeSpeed(){ sIdx=(sIdx+1)%speeds.length; audio.playbackRate=speeds[sIdx]; speedText.textContent=speeds[sIdx]+'x'; }
-function toggleShuffle(){ isShuffle=!isShuffle; document.getElementById('miniShuffle').classList.toggle('active',isShuffle); document.getElementById('shuffleBtn').classList.toggle('active',isShuffle); document.getElementById('shuffleBtn').style.opacity=isShuffle?1:.5; document.getElementById('shuffleBtn').style.color=isShuffle?'#ff1a6a':''; }
-function toggleRepeat(){ repeatMode=(repeatMode+1)%3; let miniR=document.getElementById('miniRepeat'), fullR=document.getElementById('repeatBtn'); [miniR,fullR].forEach(btn=>{ btn.classList.remove('active','repeat-one'); btn.style.opacity='.6'; btn.style.color=''; if(repeatMode==1){ btn.classList.add('active'); btn.style.opacity=1; } if(repeatMode==2){ btn.classList.add('active','repeat-one'); btn.style.opacity=1; } }); }
-async function search(){ list.innerHTML='<p style="text-align:center;opacity:.5;margin-top:20px">Mencari full...</p>'; let query=q.value.trim()||'9Lana Rasen'; let results=[]; try{ let r=await fetch(`https://saavn.dev/api/search/songs?query=${encodeURIComponent(query)}`); let d=await r.json(); if(d.data?.results?.length){ results=d.data.results.map(s=>({ title:s.name, artist:s.artists?.primary?.[0]?.name||'9Lana', image:s.image?.[2]?.url||s.image?.[1]?.url, fullUrl:s.downloadUrl?.[4]?.url||s.downloadUrl?.[3]?.url, duration:s.duration, trackId:s.id, type:'FULL' })); } }catch(e){} if(!results.length){ let r=await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(query)}&media=music&entity=song&limit=15`); let d=await r.json(); results=d.results.map(t=>({ title:t.trackName, artist:t.artistName, image:t.artworkUrl100, fullUrl:t.previewUrl, duration:30, trackId:t.trackId, type:'PREVIEW' })); } tracks=results; list.innerHTML=''; queueList.innerHTML=''; results.forEach((t,i)=>{ let div=document.createElement('div'); div.className='cardHome'; div.innerHTML=`<img src="${t.image}"><div style="flex:1"><h4 style="font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px">${t.title}</h4><p style="font-size:11px;opacity:.5">${t.artist} • ${t.type}</p></div>`; div.onclick=()=>playFull(i); list.appendChild(div); let qd=div.cloneNode(true); qd.onclick=()=>playFull(i); queueList.appendChild(qd); }); }
+function toggleShuffle(){ isShuffle=!isShuffle; document.getElementById('miniShuffle').classList.toggle('active',isShuffle); document.getElementById('shuffleBtn').classList.toggle('active',isShuffle); document.getElementById('shuffleBtn').style.opacity=isShuffle?1:.5; }
+function toggleRepeat(){ repeatMode=(repeatMode+1)%3; let miniR=document.getElementById('miniRepeat'), fullR=document.getElementById('repeatBtn'); [miniR,fullR].forEach(btn=>{ btn.classList.remove('active','repeat-one'); btn.style.opacity='.6'; if(repeatMode==1){ btn.classList.add('active'); btn.style.opacity=1; } if(repeatMode==2){ btn.classList.add('active','repeat-one'); btn.style.opacity=1; } }); }
+const INV=['https://inv.nadeko.net','https://invidious.nerdvpn.de','https://iv.melmac.space'];
+async function fetchYT(query){
+  for(let base of INV){
+    try{
+      let r=await fetch(`${base}/api/v1/search?q=${encodeURIComponent(query)}&type=video`);
+      if(!r.ok) continue; let data=await r.json(); if(!data.length) continue;
+      let res=[];
+      for(let v of data.slice(0,8)){
+        try{
+          let vr=await fetch(`${base}/api/v1/videos/${v.videoId}`); let vd=await vr.json();
+          let aurl=vd.adaptiveFormats?.filter(f=>f.type?.startsWith('audio'))?.sort((a,b)=>b.bitrate-a.bitrate)[0]?.url;
+          if(!aurl) continue;
+          res.push({ title:v.title, artist:v.author, image:v.videoThumbnails?.[2]?.url||v.videoThumbnails?.[0]?.url, fullUrl:aurl, duration:v.lengthSeconds||200, trackId:v.videoId, type:'FULL • No Ads' });
+        }catch(e){}
+      }
+      if(res.length) return res;
+    }catch(e){}
+  }
+  return [];
+}
+async function search(){
+  list.innerHTML='<p style="text-align:center;opacity:.5;margin-top:20px">Mencari YouTube Full No Ads...</p>';
+  let query=q.value.trim(); if(!query) return;
+  let results=await fetchYT(query);
+  if(!results.length){
+    let r=await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(query)}&media=music&entity=song&limit=10`);
+    let d=await r.json(); results=d.results.map(t=>({ title:t.trackName, artist:t.artistName, image:t.artworkUrl100, fullUrl:t.previewUrl, duration:30, trackId:t.trackId, type:'PREVIEW' }));
+  }
+  tracks=results; list.innerHTML=''; queueList.innerHTML='';
+  results.forEach((t,i)=>{
+    let div=document.createElement('div'); div.className='cardHome';
+    div.innerHTML=`<img src="${t.image}"><div style="flex:1"><h4 style="font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px">${t.title}</h4><p style="font-size:11px;opacity:.5">${t.artist} • ${t.type}</p></div>`;
+    div.onclick=()=>playFull(i); list.appendChild(div);
+    let qd=div.cloneNode(true); qd.onclick=()=>playFull(i); queueList.appendChild(qd);
+  });
+}
 async function fetchLyrics(a,t){ try{ let r=await fetch(`https://api.lyrics.ovh/v1/${encodeURIComponent(a)}/${encodeURIComponent(t)}`); let j=await r.json(); return j.lyrics||'Lirik tidak ditemukan'; }catch{ return 'Lirik tidak tersedia'; } }
-async function playFull(i){ idx=i; let t=tracks[i]; fTitle.textContent=t.title; fArtist.textContent=t.artist; miniTitle.textContent=t.title; miniArtist.textContent=t.artist; miniImg.src=t.image; bg.style.backgroundImage=`url('${t.image}')`; full.classList.add('active'); if(audioCtx.state==='suspended') audioCtx.resume(); fStatus.textContent=t.type==='FULL'?`✅ FULL ${Math.floor(t.duration/60)}:${String(t.duration%60).padStart(2,'0')}`:'⚠️ Preview 30s'; fStatus.style.color=t.type==='FULL'?'#4ade80':'#facc15'; lyricsDiv.textContent='Loading lirik...'; fetchLyrics(t.artist,t.title).then(l=>lyricsDiv.textContent=l); audio.src=t.fullUrl; audio.play(); pIcon.className='fa-solid fa-pause'; miniPlay.className='fa-solid fa-pause'; }
+async function playFull(i){ idx=i; let t=tracks[i]; fTitle.textContent=t.title; fArtist.textContent=t.artist; miniTitle.textContent=t.title; miniArtist.textContent=t.artist; miniImg.src=t.image; bg.style.backgroundImage=`url('${t.image}')`; full.classList.add('active'); if(audioCtx.state==='suspended') audioCtx.resume(); fStatus.textContent=`✅ ${t.type}`; fStatus.style.color='#4ade80'; lyricsDiv.textContent='Loading lirik...'; fetchLyrics(t.artist,t.title).then(l=>lyricsDiv.textContent=l); audio.src=t.fullUrl; audio.play(); pIcon.className='fa-solid fa-pause'; miniPlay.className='fa-solid fa-pause'; }
 function openFull(){ full.classList.add('active'); } function closeFull(){ full.classList.remove('active'); full.classList.remove('lyrics-mode'); switchTab('song'); }
 function togglePlay(){ if(audio.paused){ audio.play(); pIcon.className='fa-solid fa-pause'; miniPlay.className='fa-solid fa-pause'; if(audioCtx.state==='suspended') audioCtx.resume(); }else{ audio.pause(); pIcon.className='fa-solid fa-play'; miniPlay.className='fa-solid fa-play'; } }
 function next(){ if(isShuffle){ idx=Math.floor(Math.random()*tracks.length); }else{ idx=(idx+1)%tracks.length; } playFull(idx); }
@@ -119,8 +154,34 @@ function prev(){ idx=(idx-1+tracks.length)%tracks.length; playFull(idx); }
 audio.ontimeupdate=()=>{ let p=audio.duration?audio.currentTime/audio.duration*100:0; seek.value=p; miniSeek.value=p; cur.textContent=fmt(audio.currentTime); mCur.textContent=fmt(audio.currentTime); if(audio.duration){ dur.textContent=fmt(audio.duration); mDur.textContent=fmt(audio.duration); } };
 seek.oninput=()=>{ if(audio.duration) audio.currentTime=seek.value/100*audio.duration; }; miniSeek.oninput=()=>{ if(audio.duration) audio.currentTime=miniSeek.value/100*audio.duration; };
 audio.onended=()=>{ if(sleepMode){ audio.pause(); pIcon.className='fa-solid fa-play'; miniPlay.className='fa-solid fa-play'; toggleSleepSwitch(); return; } if(repeatMode==2){ audio.currentTime=0; audio.play(); }else next(); };
+async function loadRandomHome(){
+  list.innerHTML='<p style="text-align:center;opacity:.5;margin-top:24px">✨ Rekomendasi untuk kamu</p>';
+  const keys=['Yoasobi','Ado','LiSA','Aimer','Eve','Kenshi Yonezu','Vaundy'];
+  const rq=keys[Math.floor(Math.random()*keys.length)];
+  try{
+    let r=await fetch(`${INV[0]}/api/v1/search?q=${encodeURIComponent(rq)}&type=video`);
+    let data=await r.json(); let res=[];
+    for(let v of data.slice(0,6)){
+      try{
+        let vr=await fetch(`${INV[0]}/api/v1/videos/${v.videoId}`); let vd=await vr.json();
+        let aurl=vd.adaptiveFormats?.filter(f=>f.type?.startsWith('audio'))?.sort((a,b)=>b.bitrate-a.bitrate)[0]?.url;
+        if(!aurl) continue;
+        res.push({ title:v.title, artist:v.author, image:v.videoThumbnails?.[2]?.url, fullUrl:aurl, duration:v.lengthSeconds||200, trackId:v.videoId, type:'RECOMMENDED • No Ads' });
+      }catch(e){}
+    }
+    if(!res.length) throw 'empty';
+    tracks=res; list.innerHTML=''; queueList.innerHTML='';
+    res.forEach((t,i)=>{
+      let div=document.createElement('div'); div.className='cardHome';
+      div.innerHTML=`<img src="${t.image}"><div style="flex:1"><h4 style="font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px">${t.title}</h4><p style="font-size:11px;opacity:.5">${t.artist} • ${t.type}</p></div>`;
+      div.onclick=()=>playFull(i); list.appendChild(div);
+    });
+  }catch(e){
+    list.innerHTML='<p style="text-align:center;opacity:.5;margin-top:80px">Cari lagu dulu di atas 🎧<br><span style="font-size:12px">Ketik judul & klik GO</span></p>';
+  }
+}
 q.addEventListener('keydown',e=>{ if(e.key==='Enter') search(); });
-search();
+loadRandomHome();
 </script>
 </body>
 </html>
