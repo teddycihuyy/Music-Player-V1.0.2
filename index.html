@@ -213,10 +213,10 @@ function createPlaylist(){
   if(input) input.value=''; 
   if(input2) input2.value='';
   renderPlaylists(); 
-  renderAddToPlaylistList();
+  try{ renderAddToPlaylistList(); }catch(e){}
   // feedback biar tau kepencet
   const btn = document.getElementById('buatBtn');
-  if(btn){ const old=btn.textContent; btn.textContent='✓'; setTimeout(()=>btn.textContent=old,800); }
+  if(btn){ const old=btn.textContent; btn.textContent='OK'; setTimeout(()=>btn.textContent=old,800); }
 }
 function createPlaylistFromAdd(){ createPlaylist(); }
 function triggerMarquee(){
