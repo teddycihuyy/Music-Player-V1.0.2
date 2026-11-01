@@ -48,7 +48,7 @@ body{background:#000;color:#fff;height:100dvh;overflow:hidden}
 #adBadge.show{display:inline-block}
 #fTitle{overflow:hidden;white-space:nowrap;position:relative}
 #fTitle span{display:inline-block;white-space:nowrap;will-change:transform}
-#fTitle.animate span{animation:scrollOnce 20s ease-in-out 1}
+#fTitle.animate span{animation:scrollOnce 14s ease-in-out 1}
 @keyframes scrollOnce{0%,15%{transform:translateX(0)}45%,70%{transform:translateX(calc(-100% + 120px))}85%,100%{transform:translateX(0)}}
 #fArtist{margin-top:6px!important;padding-top:2px}
 #queue{position:absolute;right:0;top:0;bottom:0;width:86%;background:#111;z-index:10;transform:translateX(100%);transition:.4s;padding:20px;overflow-y:auto}
@@ -70,6 +70,7 @@ body{background:#000;color:#fff;height:100dvh;overflow:hidden}
 .playlistCard{background:rgba(22,22,22,0.7);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:14px;display:flex;gap:12px;align-items:center;margin-bottom:10px}
 .eqRow{display:flex;justify-content:space-between;align-items:center;margin:16px 0}
 .eqRow input{flex:1;margin-left:12px;accent-color:#fff}
+#tabSong,#tabLyrics{border:none!important;border-bottom:none!important;text-decoration:none!important;box-shadow:none!important}
 </style>
 </head>
 <body oncontextmenu="return false">
@@ -99,7 +100,7 @@ body{background:#000;color:#fff;height:100dvh;overflow:hidden}
 </div>
 <div id="full">
 <div id="bg"></div>
-<div style="position:absolute;top:0;left:0;right:0;z-index:5;display:flex;justify-content:space-between;padding:20px 16px"><i class="fa-solid fa-chevron-down" onclick="closeFull()" style="font-size:20px"></i><div style="display:flex;gap:14px"><b id="tabSong" onclick="switchTab('song')">Song</b><span style="opacity:.3">|</span><span id="tabLyrics" onclick="switchTab('lyrics')" style="opacity:.5">Lyrics</span></div><i class="fa-solid fa-ellipsis-vertical"></i></div>
+<div style="position:absolute;top:0;left:0;right:0;z-index:5;display:flex;justify-content:space-between;padding:20px 16px"><i class="fa-solid fa-chevron-down" onclick="closeFull()" style="font-size:20px"></i><div style="display:flex;gap:14px"><b id="tabSong" onclick="switchTab('song')">Song</b><span style="opacity:.3">|</span><span id="tabLyrics" onclick="switchTab('lyrics')" style="opacity:.5">Lyrics</span></div><i id="fullOptionsBtn" class="fa-solid fa-ellipsis-vertical" onclick="openFullMenu()" style="font-size:20px;display:none"></i></div>
 <div id="slider"><div class="panel"></div><div class="panel"><div id="lyrics" class="lyricBox">Lirik akan muncul di sini</div></div></div>
 <div id="queue"><h3 style="display:flex;justify-content:space-between">Queue <i class="fa-solid fa-xmark" onclick="queue.classList.remove('active')"></i></h3><div id="queueList" style="margin-top:16px"></div></div>
 <div class="bottom">
@@ -117,12 +118,13 @@ body{background:#000;color:#fff;height:100dvh;overflow:hidden}
 </div>
 <div id="timerModal" class="modal" onclick="if(event.target==this) closeModal('timerModal')"><div class="modalBox"><div class="closeX" onclick="closeModal('timerModal')"><i class="fa-solid fa-xmark"></i></div><div style="width:40px;height:4px;background:rgba(255,255,255,0.2);border-radius:10px;margin:0 auto 18px"></div><h3 style="font-size:20px;font-weight:800">Timer</h3><div class="timerGrid"><button class="timerBtn" onclick="setTimer(5)">5m</button><button class="timerBtn" onclick="setTimer(15)">15m</button><button class="timerBtn" onclick="setTimer(30)">30m</button><button class="timerBtn" onclick="setTimer(60)">60m</button></div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:20px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);padding:14px 16px;border-radius:14px"><span>Timer Aktif</span><div id="timerSwitch" class="switch" onclick="toggleTimer()"></div></div><p id="timerCountdown" style="text-align:center;font-size:13px;color:#fff;margin-top:14px;font-weight:600">Timer mati</p><button onclick="clearTimer()" style="margin-top:18px;width:100%;padding:14px;border-radius:14px;border:none;background:rgba(255,255,255,0.08);color:#fff;font-weight:700;border:1px solid rgba(255,255,255,0.1)">Matikan</button><button onclick="closeModal('timerModal')" style="margin-top:10px;width:100%;padding:14px;border-radius:14px;border:none;background:#fff;color:#000;font-weight:700">Tutup</button></div></div>
 <div id="sleepModal" class="modal" onclick="if(event.target==this) closeModal('sleepModal')"><div class="modalBox"><div class="closeX" onclick="closeModal('sleepModal')"><i class="fa-solid fa-xmark"></i></div><div style="width:40px;height:4px;background:rgba(255,255,255,0.2);border-radius:10px;margin:0 auto 18px"></div><h3 style="font-size:20px;font-weight:800">Sleep Timer</h3><div style="display:flex;justify-content:space-between;align-items:center;margin-top:20px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);padding:16px 16px;border-radius:14px"><div><b style="font-size:14px">Berhenti di akhir lagu</b><p style="font-size:11px;opacity:.5;margin-top:2px">Musik berhenti otomatis</p></div><div id="sleepSwitch" class="switch" onclick="toggleSleep()"></div></div><p id="sleepStatus" style="text-align:center;font-size:12px;opacity:.6;margin-top:14px">Mati</p><button onclick="closeModal('sleepModal')" style="margin-top:18px;width:100%;padding:14px;border-radius:14px;border:none;background:#fff;color:#000;font-weight:700">Tutup</button></div></div>
-<div id="eqModal" class="modal" onclick="if(event.target==this) closeModal('eqModal')"><div class="modalBox"><div class="closeX" onclick="closeModal('eqModal')"><i class="fa-solid fa-xmark"></i></div><div style="width:40px;height:4px;background:rgba(255,255,255,0.2);border-radius:10px;margin:0 auto 18px"></div><h3 style="font-size:20px;font-weight:800">Equalizer</h3><div style="margin-top:22px"><div class="eqRow"><div><b>Bass</b><p style="font-size:10px;opacity:.5">Low</p></div><input type="range" id="bass" min="-12" max="12" value="0"></div><div class="eqRow"><div><b>Mid</b><p style="font-size:10px;opacity:.5">Middle</p></div><input type="range" id="mid" min="-12" max="12" value="0"></div><div class="eqRow"><div><b>Treble</b><p style="font-size:10px;opacity:.5">High</p></div><input type="range" id="treble" min="-12" max="12" value="0"></div></div><button onclick="closeModal('eqModal')" style="margin-top:20px;width:100%;padding:14px;border-radius:14px;border:none;background:#fff;color:#000;font-weight:700">Simpan</button></div></div>
+<div id="eqModal" class="modal" onclick="if(event.target==this) closeModal('eqModal')"><div class="modalBox"><div class="closeX" onclick="closeModal('eqModal')"><i class="fa-solid fa-xmark"></i></div><div style="width:40px;height:4px;background:rgba(255,255,255,0.2);border-radius:10px;margin:0 auto 18px"></div><h3 style="font-size:20px;font-weight:800">Equalizer <span style="font-size:11px;opacity:.5;font-weight:600" id="eqModeLabel">• Offline Only</span></h3><div style="margin-top:22px"><div class="eqRow"><div><b>Bass</b><p style="font-size:10px;opacity:.5">Low</p></div><input type="range" id="bass" min="-12" max="12" value="0"><span id="bassVal" style="width:32px;text-align:right;font-size:12px;opacity:.7">0</span></div><div class="eqRow"><div><b>Mid</b><p style="font-size:10px;opacity:.5">Middle</p></div><input type="range" id="mid" min="-12" max="12" value="0"><span id="midVal" style="width:32px;text-align:right;font-size:12px;opacity:.7">0</span></div><div class="eqRow"><div><b>Treble</b><p style="font-size:10px;opacity:.5">High</p></div><input type="range" id="treble" min="-12" max="12" value="0"><span id="trebleVal" style="width:32px;text-align:right;font-size:12px;opacity:.7">0</span></div></div><div style="display:flex;gap:8px;margin-top:18px"><button onclick="resetEQ()" style="flex:1;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.06);color:#fff;font-weight:700"><i class="fa-solid fa-rotate-left" style="margin-right:6px"></i>Default</button><button onclick="closeModal('eqModal')" style="flex:1;padding:12px;border-radius:12px;border:none;background:#fff;color:#000;font-weight:700">Simpan</button></div><p id="eqInfo" style="font-size:11px;opacity:.4;text-align:center;margin-top:14px">EQ aktif hanya untuk lagu offline (Storage)</p></div></div>
 <div id="songOptionsModal" class="modal" onclick="if(event.target==this) closeModal('songOptionsModal')"><div class="modalBox"><div class="closeX" onclick="closeModal('songOptionsModal')"><i class="fa-solid fa-xmark"></i></div><div style="width:40px;height:4px;background:rgba(255,255,255,0.2);border-radius:10px;margin:0 auto 18px"></div><h3 id="optTitle" style="font-size:16px;font-weight:800">Options</h3><div style="margin-top:18px;display:flex;flex-direction:column;gap:10px"><button onclick="likeFromOptions()" style="width:100%;padding:14px;border-radius:14px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#fff;font-weight:600;text-align:left"><i class="fa-regular fa-heart" style="margin-right:10px"></i> Like / Unlike</button><button onclick="copyLinkFromOptions()" style="width:100%;padding:14px;border-radius:14px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#fff;font-weight:600;text-align:left"><i class="fa-solid fa-link" style="margin-right:10px"></i> Salin Link</button><button onclick="addToPlaylistFromOptions()" style="width:100%;padding:14px;border-radius:14px;border:none;background:#fff;color:#000;font-weight:700;text-align:left"><i class="fa-solid fa-plus" style="margin-right:10px"></i> Add to Playlist</button></div><button onclick="closeModal('songOptionsModal')" style="margin-top:14px;width:100%;padding:14px;border-radius:14px;border:none;background:rgba(255,255,255,0.08);color:#fff;font-weight:700">Batal</button></div></div>
+<div id="fullOptionsModal" class="modal" onclick="if(event.target==this) closeModal('fullOptionsModal')"><div class="modalBox"><div class="closeX" onclick="closeModal('fullOptionsModal')"><i class="fa-solid fa-xmark"></i></div><div style="width:40px;height:4px;background:rgba(255,255,255,0.2);border-radius:10px;margin:0 auto 18px"></div><h3 style="font-size:20px;font-weight:800">Opsi Lagu Offline</h3><p style="font-size:12px;opacity:.5;margin-top:6px">Hanya berlaku untuk lagu di Storage</p><div style="margin-top:18px"><label style="font-size:12px;opacity:.7">Judul Lagu</label><input id="renameTitle" placeholder="Judul baru..." style="width:100%;margin-top:6px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:12px;color:#fff"></div><div style="margin-top:12px"><label style="font-size:12px;opacity:.7">Artis</label><input id="renameArtist" placeholder="Artis baru..." style="width:100%;margin-top:6px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:12px;color:#fff"></div><div style="display:flex;gap:8px;margin-top:18px"><button onclick="closeModal('fullOptionsModal')" style="flex:1;padding:14px;border-radius:14px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#fff;font-weight:700">Batal</button><button onclick="saveRename()" style="flex:1;padding:14px;border-radius:14px;border:none;background:#fff;color:#000;font-weight:700">Simpan</button></div></div></div>
 <div id="addToPlaylistModal" class="modal" onclick="if(event.target==this) closeModal('addToPlaylistModal')"><div class="modalBox"><div class="closeX" onclick="closeModal('addToPlaylistModal')"><i class="fa-solid fa-xmark"></i></div><div style="width:40px;height:4px;background:rgba(255,255,255,0.2);border-radius:10px;margin:0 auto 18px"></div><h3 style="font-size:20px;font-weight:800">Add to Playlist</h3><div id="addToPlaylistList" style="margin-top:18px;max-height:300px;overflow-y:auto"></div><div style="display:flex;gap:8px;margin-top:14px"><input id="quickNewPlaylist" placeholder="Playlist baru..." style="flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px;color:#fff"><button class="goBtn" style="padding:12px 18px" onclick="createPlaylistFromAdd()">Buat</button></div></div></div>
 <div id="editPlaylistModal" class="modal" onclick="if(event.target==this) closeModal('editPlaylistModal')"><div class="modalBox" style="max-height:85vh;overflow-y:auto"><div class="closeX" onclick="closeModal('editPlaylistModal')"><i class="fa-solid fa-xmark"></i></div><div style="width:40px;height:4px;background:rgba(255,255,255,0.2);border-radius:10px;margin:0 auto 18px"></div><h3 style="font-size:20px;font-weight:800">Edit Playlist</h3><div style="display:flex;gap:8px;margin-top:16px"><input id="editPlaylistName" placeholder="Nama playlist..." style="flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px;color:#fff"><button class="goBtn" onclick="savePlaylistName()">Simpan</button></div><p style="font-size:11px;opacity:.4;margin-top:16px;margin-bottom:8px">Geser untuk urutkan • Tap X untuk hapus lagu</p><div id="editPlaylistTracks" style="margin-top:8px"></div><button onclick="closeModal('editPlaylistModal')" style="margin-top:16px;width:100%;padding:14px;border-radius:14px;border:none;background:#fff;color:#000;font-weight:700">Selesai</button></div></div>
 <div id="yt-player" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0"></div>
-<audio id="localAudio" preload="metadata"></audio>
+<audio id="localAudio" preload="metadata" crossorigin="anonymous"></audio>
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>
 const API_KEY='AIzaSyCuKx7zWsOGiyegFVsS35Yr77NYtLgyY34';
@@ -133,12 +135,52 @@ let liked=JSON.parse(localStorage.getItem('likedSongs')||'[]');
 let playlists=JSON.parse(localStorage.getItem('playlists')||'[]');
 let speeds=[0.5,0.75,1.0,1.25,1.5,2.0], sIdx=2;
 let localTracks=[];
+let audioCtx, bassFilter, midFilter, trebleFilter, sourceNode;
 const q=document.getElementById('q'), list=document.getElementById('list'), queueList=document.getElementById('queueList'), localList=document.getElementById('localList'), localCount=document.getElementById('localCount');
 const fTitle=document.getElementById('fTitle'), fTitleText=document.getElementById('fTitleText'), fArtist=document.getElementById('fArtist'), fStatus=document.getElementById('fStatus'), bg=document.getElementById('bg'), homeBg=document.getElementById('homeBg');
 const miniTitle=document.getElementById('miniTitle'), miniArtist=document.getElementById('miniArtist'), miniImg=document.getElementById('miniImg');
 const lyricsDiv=document.getElementById('lyrics'), cur=document.getElementById('cur'), dur=document.getElementById('dur'), mCur=document.getElementById('mCur'), mDur=document.getElementById('mDur');
 const seek=document.getElementById('seek'), miniSeek=document.getElementById('miniSeek'), pIcon=document.getElementById('pIcon'), miniPlay=document.getElementById('miniPlay'), adBadge=document.getElementById('adBadge');
 const localAudio=document.getElementById('localAudio'), localFileInput=document.getElementById('localFileInput');
+function initEQ(){
+  if(audioCtx) return;
+  try{
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    bassFilter = audioCtx.createBiquadFilter(); bassFilter.type='lowshelf'; bassFilter.frequency.value=200;
+    midFilter = audioCtx.createBiquadFilter(); midFilter.type='peaking'; midFilter.frequency.value=1000; midFilter.Q.value=1;
+    trebleFilter = audioCtx.createBiquadFilter(); trebleFilter.type='highshelf'; trebleFilter.frequency.value=3000;
+    sourceNode = audioCtx.createMediaElementSource(localAudio);
+    sourceNode.connect(bassFilter).connect(midFilter).connect(trebleFilter).connect(audioCtx.destination);
+  }catch(e){ console.log('EQ fail', e); }
+}
+function resetEQ(){
+  document.getElementById('bass').value=0; document.getElementById('mid').value=0; document.getElementById('treble').value=0;
+  document.getElementById('bassVal').textContent='0'; document.getElementById('midVal').textContent='0'; document.getElementById('trebleVal').textContent='0';
+  if(bassFilter) bassFilter.gain.value=0;
+  if(midFilter) midFilter.gain.value=0;
+  if(trebleFilter) trebleFilter.gain.value=0;
+  localStorage.removeItem('eqSettings');
+}
+function openFullMenu(){
+  if(!isLocalMode) return;
+  const t=localTracks[localIdx]; if(!t) return;
+  document.getElementById('renameTitle').value=t.title;
+  document.getElementById('renameArtist').value=t.artist;
+  openModal('fullOptionsModal');
+}
+function saveRename(){
+  if(!isLocalMode) return;
+  const newTitle=document.getElementById('renameTitle').value.trim();
+  const newArtist=document.getElementById('renameArtist').value.trim();
+  if(!newTitle) return;
+  const t=localTracks[localIdx];
+  t.title=newTitle; if(newArtist) t.artist=newArtist; t.ch=newArtist||t.artist;
+  fTitleText.textContent=t.title; fArtist.textContent=t.artist+' • Offline';
+  miniTitle.textContent=t.title; miniArtist.textContent=t.artist;
+  renderLocal();
+  closeModal('fullOptionsModal');
+  setTimeout(triggerMarquee,200);
+}
 function switchHomeTab(tab){
   document.getElementById('tabOnline').classList.toggle('active', tab==='online');
   document.getElementById('tabLocal').classList.toggle('active', tab==='local');
@@ -150,7 +192,15 @@ function switchHomeTab(tab){
 }
 function openModal(id){document.getElementById(id).classList.add('show')}
 function closeModal(id){document.getElementById(id).classList.remove('show')}
-function switchTab(t){ const slider=document.getElementById('slider'); if(t==='lyrics'){ slider.style.transform='translateX(-50%)'; document.getElementById('tabSong').style.opacity=.5; document.getElementById('tabLyrics').style.opacity=1; document.getElementById('full').classList.add('lyrics-mode'); }else{ slider.style.transform='translateX(0)'; document.getElementById('tabLyrics').style.opacity=.5; document.getElementById('tabSong').style.opacity=1; document.getElementById('full').classList.remove('lyrics-mode'); } }
+function switchTab(t){ 
+  const slider=document.getElementById('slider'); 
+  const song=document.getElementById('tabSong');
+  const lyr=document.getElementById('tabLyrics');
+  song.style.border='none'; song.style.borderBottom='none';
+  lyr.style.border='none'; lyr.style.borderBottom='none';
+  if(t==='lyrics'){ slider.style.transform='translateX(-50%)'; song.style.opacity=.5; lyr.style.opacity=1; document.getElementById('full').classList.add('lyrics-mode'); }
+  else{ slider.style.transform='translateX(0)'; lyr.style.opacity=.5; song.style.opacity=1; document.getElementById('full').classList.remove('lyrics-mode'); } 
+}
 function savePlaylists(){ localStorage.setItem('playlists', JSON.stringify(playlists)); }
 function createPlaylist(){
   let name=document.getElementById('newPlaylistName').value.trim()||document.getElementById('quickNewPlaylist').value.trim();
@@ -295,16 +345,34 @@ function shuffleLocal(){ if(!localTracks.length) return; localTracks.sort(()=>Ma
 function playLocal(i){
   isLocalMode=true; localIdx=i; const t=localTracks[i];
   if(player) player.pauseVideo();
+  try{ initEQ(); if(audioCtx && audioCtx.state==='suspended') audioCtx.resume(); }catch(e){}
   homeBg.style.backgroundImage=`linear-gradient(135deg,#222,#000)`; homeBg.classList.add('show');
   bg.style.backgroundImage=`linear-gradient(135deg,#333,#000)`; miniImg.src='';
   fTitleText.textContent=t.title; fArtist.textContent=t.artist+' • Offline'; miniTitle.textContent=t.title; miniArtist.textContent=t.artist;
   fStatus.textContent=''; lyricsDiv.textContent=navigator.onLine?'Mencari lirik...':'Lirik tidak tersedia'; lyricsDiv.classList.remove('ad-mode');
+  document.getElementById('fullOptionsBtn').style.display='block';
+  document.getElementById('eqModeLabel').textContent='• EQ Aktif';
+  document.getElementById('eqInfo').textContent='EQ aktif - geser Bass/Mid/Treble, jalan 100% offline';
   document.getElementById('full').classList.add('active');
   localAudio.src=t.url; localAudio.playbackRate=speeds[sIdx]; localAudio.play();
+
+  // --- TAMBAHAN BARU BIAR BISA BACKGROUND + LOCKSCREEN ---
+  if ('mediaSession' in navigator) {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: t.title,
+      artist: t.artist,
+      artwork: [{ src: 'https://cdn-icons-png.flaticon.com/512/138/138926.png', sizes: '512x512', type: 'image/png' }]
+    });
+    navigator.mediaSession.setActionHandler('play', () => localAudio.play());
+    navigator.mediaSession.setActionHandler('pause', () => localAudio.pause());
+    navigator.mediaSession.setActionHandler('nexttrack', () => next());
+    navigator.mediaSession.setActionHandler('previoustrack', () => prev());
+  }
+
   pIcon.className='fa-solid fa-pause'; miniPlay.className='fa-solid fa-pause';
   if(navigator.onLine){ fetchLyrics(t.artist,t.title).then(l=>{ lyricsDiv.textContent=l||'Lirik tidak tersedia'; }); }
   setTimeout(triggerMarquee,400);
-}
+  }
 localAudio.addEventListener('timeupdate', ()=>{ if(isLocalMode && !isDragging){ const ct=localAudio.currentTime||0; const d=localAudio.duration||0; if(d>0){ const pct=(ct/d)*100; seek.value=pct; miniSeek.value=pct; cur.textContent=fmt(ct); mCur.textContent=fmt(ct); dur.textContent=fmt(d); mDur.textContent=fmt(d); } } });
 localAudio.addEventListener('ended', ()=>{ if(sleepMode){ localAudio.pause(); toggleSleep(); return; } if(repeatMode==2){ localAudio.currentTime=0; localAudio.play(); }else{ if(isShuffle){ localIdx=Math.floor(Math.random()*localTracks.length); }else{ localIdx=(localIdx+1)%localTracks.length; } playLocal(localIdx); } });
 localAudio.addEventListener('play', ()=>{ pIcon.className='fa-solid fa-pause'; miniPlay.className='fa-solid fa-pause'; });
@@ -329,7 +397,11 @@ async function fetchLyrics(artist, title){
   }catch(e){}
   try{ let res=await fetch(`https://api.lyrics.ovh/v1/${encodeURIComponent(cleanArtist)}/${encodeURIComponent(cleanTitle)}`); let d=await res.json(); if(d.lyrics&&d.lyrics.length>20) return d.lyrics; }catch(e){}
   return null;
-  }
+}
+document.getElementById('bass').addEventListener('input', e=>{ const v=parseFloat(e.target.value); document.getElementById('bassVal').textContent=v; initEQ(); if(bassFilter){ bassFilter.gain.value=v; if(audioCtx.state==='suspended') audioCtx.resume(); } localStorage.setItem('eqSettings', JSON.stringify({bass:document.getElementById('bass').value, mid:document.getElementById('mid').value, treble:document.getElementById('treble').value})); });
+document.getElementById('mid').addEventListener('input', e=>{ const v=parseFloat(e.target.value); document.getElementById('midVal').textContent=v; initEQ(); if(midFilter){ midFilter.gain.value=v; if(audioCtx.state==='suspended') audioCtx.resume(); } localStorage.setItem('eqSettings', JSON.stringify({bass:document.getElementById('bass').value, mid:document.getElementById('mid').value, treble:document.getElementById('treble').value})); });
+document.getElementById('treble').addEventListener('input', e=>{ const v=parseFloat(e.target.value); document.getElementById('trebleVal').textContent=v; initEQ(); if(trebleFilter){ trebleFilter.gain.value=v; if(audioCtx.state==='suspended') audioCtx.resume(); } localStorage.setItem('eqSettings', JSON.stringify({bass:document.getElementById('bass').value, mid:document.getElementById('mid').value, treble:document.getElementById('treble').value})); });
+(function loadEQ(){ const saved=JSON.parse(localStorage.getItem('eqSettings')||'null'); if(saved){ document.getElementById('bass').value=saved.bass||0; document.getElementById('mid').value=saved.mid||0; document.getElementById('treble').value=saved.treble||0; document.getElementById('bassVal').textContent=saved.bass||0; document.getElementById('midVal').textContent=saved.mid||0; document.getElementById('trebleVal').textContent=saved.treble||0; } })();
 function onYouTubeIframeAPIReady(){
   player=new YT.Player('yt-player',{height:'1',width:'1',videoId:'',playerVars:{playsinline:1,origin:location.origin,enablejsapi:1},events:{
     onReady:()=>{
@@ -412,6 +484,9 @@ function playFull(i){
   isLocalMode=false; localAudio.pause(); idx=i; const t=tracks[i];
   setHDBackground(homeBg,t.id); homeBg.classList.add('show'); setHDBackground(bg,t.id); setHDImage(miniImg,t.id);
   fTitleText.textContent=t.title; fArtist.textContent=t.ch; miniTitle.textContent=t.title; miniArtist.textContent=t.ch; fStatus.textContent=''; lyricsDiv.textContent='Mencari lirik...'; lyricsDiv.classList.remove('ad-mode');
+  document.getElementById('fullOptionsBtn').style.display='none';
+  document.getElementById('eqModeLabel').textContent='• Offline Only';
+  document.getElementById('eqInfo').textContent='EQ tidak bisa untuk YouTube (CORS), hanya untuk lagu Storage offline';
   if(liked.includes(t.id)) document.getElementById('likeBtn').className='fa-solid fa-heart'; else document.getElementById('likeBtn').className='fa-regular fa-heart';
   document.getElementById('full').classList.add('active');
   if(player&&player.loadVideoById) player.loadVideoById(t.id);
